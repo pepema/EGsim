@@ -1,10 +1,22 @@
-@startuml
+@startuml Component Diagram
 
-KeyPresses -> [Input Handler]
-[Input Handler] -> CANFrames
-CANFrames -> [CAN Reader]
+package "Input Generator"{
+    [Input Handler]
+}
+
+package "Engine Simulator"{
+    [CAN Reader]
+    [Transmition]
+    [CAN Writer]
+}
+
+KeyPresses --> [Input Handler]
+[Input Handler] --> CANInput
+CANInput --> [CAN Reader]
 [CAN Reader] -> [Transmition]
 [Transmition] ->  [CAN Writer]
+[CAN Writer] --> CANOutput
+
 @enduml
 
 }
