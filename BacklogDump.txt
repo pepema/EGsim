@@ -31,3 +31,6 @@ Epic : System setup
     DOD : Engine simulator taking "a CAN Frame" as an input from Input Generator
           Giving "a CAN Frame" as an output
           Unit test to have "a CAN Frame output" (After taking "a CAN Frame" as an input from Input Generator)
+
+3) Demo after build
+    DOD : make a cmake file and build the code without errors.
