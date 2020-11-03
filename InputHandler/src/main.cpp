@@ -1,6 +1,7 @@
 #include <iostream>
 #include <curses.h>
 #include "socketcan_cpp.h"
+#include <thread>
 
 // https://github.com/siposcsaba89/socketcan-cpp
 
@@ -38,11 +39,19 @@ int main() {
     } else {
       if(ch == 49){
         cf_to_write.data[7] = 1;
-        auto write_sc_status = sockat_can.write(cf_to_write);
+      } else if(ch == 50){
+        cf_to_write.data[7] = 0;
+      } else if(ch == 97){
+        if (cf_to_write.data[6]>0) cf_to_write.data[6]-=0x10;
+      } else if(ch == 65){
+        if(cf_to_write.data[6]<0xA0) cf_to_write.data[6]+=0x10;
+      }
+       else {
+        std::cout << "this key was pressed: " << ch << std::endl;
       }
     }
-
-  
+    auto write_sc_status = sockat_can.write(cf_to_write);
+    std::this_thread::sleep_for(std::chrono::milliseconds(10));
   }
 
 
