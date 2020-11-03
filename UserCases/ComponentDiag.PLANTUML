@@ -1,0 +1,10 @@
+@startuml
+
+KeyPresses -> [Input Handler]
+[Input Handler] -> CANFrames
+CANFrames -> [CAN Reader]
+[CAN Reader] -> [Transmition]
+[Transmition] ->  [CAN Writer]
+@enduml
+
+}
