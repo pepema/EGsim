@@ -1,11 +1,10 @@
 #include "can_writer.hpp"
 
-void CanWriter::Init(){
-
-  if (socket_can.open("vcan0") != scpp::STATUS_OK) {
-  std::cout << "Cannot open vcan0." << std::endl;
-  std::cout << "Check whether the vcan0 interface is up!" << std::endl;
-  exit (-1);
+CanWriter::CanWriter(){
+  if (socket_can.open("vcan0") != scpp::STATUS_OK){
+    std::cout << "Cannot open vcan0." << std::endl;
+    std::cout << "Check whether the vcan0 interface is up!" << std::endl;
+    exit (-1);
   }
   int length = 8;
   cf_to_write.len = length;
