@@ -1,15 +1,16 @@
 #include "can_encoder.hpp"
 
 void CanEncoder::Encode(int input, uint8_t* data){
+
   if (input == -1) {
     } else {
-      if(input == 49){
+      if(input == 'S'){
         data[7] = 1;
-      } else if(input == 50){
+      } else if(input == 's'){
         data[7] = 0;
-      } else if(input == 97){
+      } else if(input == 'a'){
         if (data[6]>0) data[6]-=0x10;
-      } else if(input == 65){
+      } else if(input == 'A'){
         if(data[6]<0xA0) data[6]+=0x10;
       } else {
         //std::cout << "this key was pressed: " << ch << std::endl;

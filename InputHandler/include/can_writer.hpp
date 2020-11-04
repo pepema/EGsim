@@ -3,12 +3,17 @@
 
 class CanWriter{
 public:
-  CanWriter(int id, int length);
-  ~CanWriter()=default;
-  scpp::CanFrame GetFrame();
-  uint8_t* GetFrameData();
+static CanWriter& getInstance(){
+  static CanWriter instance;
+  instance.Init();
+  return instance;
+}
   void SendFrame(int id, uint8_t* data);
-  scpp::SocketCan socket_can;
 private:
+  void Init();
+  CanWriter(){};
+  CanWriter(CanWriter const &);
+  void operator=(CanWriter const&);
   scpp::CanFrame cf_to_write;
+  scpp::SocketCan socket_can;
 };

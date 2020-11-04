@@ -6,8 +6,8 @@
 
 // https://github.com/siposcsaba89/socketcan-cpp
 
-int main() {
-  CanWriter writer(1,8);
+int main(){
+  CanWriter& writer = CanWriter::getInstance();
   CanEncoder encoder;
   InputHandler keypresshandler;
   uint8_t data [8] = {0,0,0,0,0,0,0,0};
@@ -17,7 +17,6 @@ int main() {
     key_pressed = keypresshandler.GetPressedKey();
     if(key_pressed != -1)
       if(key_pressed == 27)
-        //call desstructors
         break;
       encoder.Encode(key_pressed,data);
     writer.SendFrame(1, data);
