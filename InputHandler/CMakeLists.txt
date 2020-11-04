@@ -8,6 +8,7 @@ add_executable(InputHandler
                src/socketcan_cpp.cpp
                src/main.cpp
                src/can_writer.cpp
+               src/can_encoder.cpp
                )
 
 target_link_libraries(InputHandler ncurses)

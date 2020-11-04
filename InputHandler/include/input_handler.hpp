@@ -3,8 +3,8 @@
 class InputHandler{
 public:
   InputHandler();
-  ~InputHandler() = default;
-  void EncodeKeyPresses(uint8_t* data);
+  ~InputHandler();
+  int GetPressedKey();
 private:
   int ch;
 };

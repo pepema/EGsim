@@ -1,5 +1,8 @@
+#include <iostream>
+
 class CanEncoder{
-  void Encode(int input);
+public:
+  void Encode(int input, uint8_t* data);
   CanEncoder() = default;
   ~CanEncoder() = default;
 };
