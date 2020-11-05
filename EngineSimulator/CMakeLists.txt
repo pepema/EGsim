@@ -5,7 +5,7 @@ include_directories(include)
 include_directories(../InputHandler/include)
 
 add_executable(EngineSimulator 
-               src/transmition.cpp
+               src/signal_decoder.cpp
                src/can_encoder.cpp
                src/main.cpp
                ../InputHandler/src/can_writer.cpp
