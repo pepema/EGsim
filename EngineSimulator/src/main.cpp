@@ -1,8 +1,12 @@
 #include "can_reader.h"
 #include "transmition.h"
 #include "can_encoder.h"
+<<<<<<< HEAD
 #include "can_writer.hpp"
 #include <thread>
+=======
+#include "../../InputHandler/include/can_writer.hpp"
+>>>>>>> 9a590215f4f070bcde0ec526e72724d8bdb1514e
 
 int main()
 {
