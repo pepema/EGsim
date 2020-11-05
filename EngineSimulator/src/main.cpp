@@ -3,6 +3,7 @@
 #include "can_encoder.h"
 #include "can_writer.hpp"
 #include <thread>
+#include <iomanip>
 #include "engine.h"
 
 int main()
@@ -28,7 +29,7 @@ int main()
 
         my_encoder.encodeEngineStatus(my_engine.getEngineStatus());
         my_encoder.encodeRPM(my_engine.getARPM());
-
+        my_encoder.encodeSpeed(my_engine.getARPM());
         //CW send frame
 
         output_data = my_encoder.get_frame_data_op();
@@ -37,11 +38,11 @@ int main()
         
         std::this_thread::sleep_for(std::chrono::nanoseconds(100));
 
-        uint16_t print_rpm = output_data.data[2] << 8 | output_data.data[1];
-        std::cout << " Speed: "               << static_cast<int>(output_data.data[0])
-                  << " RPM: "                 << static_cast<int>(print_rpm)
+       uint16_t print_rpm = output_data.data[2] << 8 | output_data.data[1];
+        std::cout << " Speed: "               << std::setfill(' ') << std::setw(3) << static_cast<int>(output_data.data[0])
+                  << " RPM: "                 << std::setfill(' ') << std::setw(5) << static_cast<int>(print_rpm)
                   << " EngineStatus: "        << static_cast<int>(output_data.data[3])
-                  << " Gear: "                << static_cast<int>(output_data.data[4])
+                  << " Acceleration: "        << std::setfill(' ') << std::setw(3) << static_cast<int>(my_signal_decoder.getAcceleration()) << "%"
                   << '\r' << std::flush;
     }
     return 0;

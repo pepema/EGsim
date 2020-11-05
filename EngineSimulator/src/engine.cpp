@@ -1,21 +1,21 @@
 #include "engine.h"
 
 void Engine::updateTRPM(const uint8_t& acceleration){
-    if (acceleration==0){
-        this->TRPM=700;
-    }
+    if(this->engine_STC)
+        if (acceleration==0)
+            this->TRPM=700;  
+        else
+            this->TRPM=700+(10000-700)*acceleration/100;
     else
-        this->TRPM=700+(10000-700)*acceleration/100;
+        this->TRPM=0;
     }
+    
 
 void Engine::updateARPM(const uint8_t& acceleration){
-    if (this->ARPM<this->TRPM){
-        this->ARPM=this->ARPM+(10*acceleration)/100;
+    double vroom=static_cast<double>(this->TRPM-this->ARPM)/40000;
+    this->ARPM+=vroom;
     }
-    else {
-        this->ARPM -= 10;
-    }
-}
+
 
 Engine::Engine(){
     engine_STC = false;
@@ -24,7 +24,7 @@ Engine::Engine(){
 }
 
 uint16_t Engine::getARPM(){
-    return ARPM;
+    return static_cast<uint16_t>(ARPM);
 }
 
 bool Engine::getEngineStatus(){

@@ -10,7 +10,8 @@ class Engine
 {
 private:
     bool engine_STC;
-    uint16_t  ARPM, TRPM;
+    uint16_t  TRPM;
+    double ARPM;
 
 public:
     void setEngineStatus(const bool& ES);

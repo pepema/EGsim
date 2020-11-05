@@ -26,6 +26,12 @@ void CANEncoder::encodeRPM(const uint16_t& actual_rpm){
     frame_data_op.data[2] = actual_rpm >> 8;
     frame_data_op.data[1] = actual_rpm & 255;
 }
+ void CANEncoder::encodeSpeed(const uint16_t& ARPM){
+    if(ARPM>700)
+        frame_data_op.data[0] = (ARPM-700)/55;
+    else
+        frame_data_op.data[0] = 0;
+ }
 
 FrameData CANEncoder::get_frame_data_op()
 {

@@ -13,6 +13,7 @@ public:
     ~CANEncoder() = default;
     void encodeEngineStatus(const bool &);
     void encodeRPM(const uint16_t&);
+    void encodeSpeed(const uint16_t&);
     FrameData get_frame_data_op();
 };
 #endif
