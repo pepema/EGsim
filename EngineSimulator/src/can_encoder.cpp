@@ -19,15 +19,11 @@ CANEncoder::CANEncoder()
 
 void CANEncoder::encodeEngineStatus(const bool &engine_status)
 {
-    if(engine_status == false)
-    {
-        frame_data_op.data[3] = 0;
-    }
-    else
-    {
-        frame_data_op.data[3] = 1;
-    }
-    
+    frame_data_op.data[3] = engine_status;
+}
+void CANEncoder::encodeRPM(const uint16_t& actual_rpm){
+    frame_data_op.data[2] = actual_rpm >> 8;
+    frame_data_op.data[1] = actual_rpm & 255;
 }
 
 FrameData CANEncoder::get_frame_data_op()
