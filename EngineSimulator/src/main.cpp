@@ -13,6 +13,7 @@ int main()
     CANEncoder my_encoder;
     CanWriter my_writer;
     FrameData output_data;
+    Engine my_engine;
 
     while(true){
         my_reader.read();
@@ -21,7 +22,8 @@ int main()
         my_signal_decoder.setIpFrame(my_reader.getData());
         //Set Values Tran
 
-        my_encoder.encodeEngineStatus(my_signal_decoder.getEngineStatus());
+        my_encoder.encodeEngineStatus(my_engine.getEngineStatus());
+        my_encoder.encodeRPM(my_engine.getARPM());
 
         //CW send frame
 
