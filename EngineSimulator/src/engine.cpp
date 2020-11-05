@@ -13,3 +13,11 @@ void Engine::updateARPM(uint8_t acceleration){
         this->ARPM=this->ARPM+10*acceleration/100;
     }
 }
+
+    Engine::Engine(){
+
+        engine_STC = false;
+        ARPM = 0;
+        TRPM = 0;
+    
+    }
