@@ -3,7 +3,6 @@
 #include "can_encoder.h"
 #include "can_writer.hpp"
 #include <thread>
-#include "../../InputHandler/include/can_writer.hpp"
 
 int main()
 {
