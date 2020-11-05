@@ -15,8 +15,11 @@ CANReader::~CANReader()
 
 void CANReader::read()
 {
-    if (socket_can.read(can_frame) == scpp::STATUS_OK) 
+    if (socket_can.read(temp) == scpp::STATUS_OK) 
     {
+        if (temp.id == 1){
+            can_frame=temp;
+        }
         //Notify all subscribers
         //Update Frame data
     }
@@ -29,7 +32,7 @@ void CANReader::read()
 FrameData CANReader::getData()
 {
     FrameData frameDataToPass;
-    if(can_frame.id == 123)
+    if(can_frame.id == 1)
     {
         for (size_t i = 0; i < 8; i++)
         {

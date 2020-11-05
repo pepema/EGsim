@@ -11,4 +11,5 @@ add_executable(EngineSimulator
                ../InputHandler/src/can_writer.cpp
                ../InputHandler/src/socketcan_cpp.cpp
                src/can_reader.cpp
+               src/engine.cpp
                )

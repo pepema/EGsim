@@ -3,6 +3,7 @@
 #include "can_encoder.h"
 #include "can_writer.hpp"
 #include <thread>
+#include "engine.h"
 
 int main()
 {
@@ -18,9 +19,11 @@ int main()
     while(true){
         my_reader.read();
         //my_reader.getData();
-
         my_signal_decoder.setIpFrame(my_reader.getData());
         //Set Values Tran
+        my_engine.setEngineStatus(my_signal_decoder.getEngineStatus());
+
+        //std::cout << my_signal_decoder.getEngineStatus() << std::endl;
 
         my_encoder.encodeEngineStatus(my_engine.getEngineStatus());
         my_encoder.encodeRPM(my_engine.getARPM());
@@ -29,8 +32,8 @@ int main()
 
         output_data = my_encoder.get_frame_data_op();
 
-        my_writer.SendFrame(123,output_data.data);
-
+        //my_writer.SendFrame(123,output_data.data);
+        
         std::this_thread::sleep_for(std::chrono::milliseconds(10));
 
         uint16_t print_rpm = output_data.data[2] << 8 | output_data.data[1];

@@ -16,11 +16,13 @@ class CANReader
 private:
     scpp::SocketCan socket_can;
     scpp::CanFrame can_frame;
+    scpp::CanFrame temp;
 public:
     CANReader();
     ~CANReader();
     void read();
     FrameData getData();
+    bool valid_frame = false;
     /*static CANReader& getInstance()
     {
         static CANReader instance;

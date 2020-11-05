@@ -19,6 +19,7 @@ CANEncoder::CANEncoder()
 
 void CANEncoder::encodeEngineStatus(const bool &engine_status)
 {
+    //std::cout << static_cast<int>(engine_status) << std::endl;
     frame_data_op.data[3] = engine_status;
 }
 void CANEncoder::encodeRPM(const uint16_t& actual_rpm){
