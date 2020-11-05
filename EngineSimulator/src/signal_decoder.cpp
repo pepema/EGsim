@@ -30,7 +30,6 @@ void SignalDecoder::setIpFrame(const FrameData & frame_data_val)
 
 bool SignalDecoder::getEngineStatus()
 {
-    //std::cout << static_cast<int>(frame_data_ip.data[7]) << std::endl;
     if(frame_data_ip.data[7] == 0)
     {
         return false;

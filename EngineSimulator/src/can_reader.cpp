@@ -15,17 +15,18 @@ CANReader::~CANReader()
 
 void CANReader::read()
 {
-    if (socket_can.read(temp) == scpp::STATUS_OK) 
+    scpp::CanFrame temp1;
+    if (socket_can.read(temp1) == scpp::STATUS_OK) 
     {
-        if (temp.id == 1){
-            can_frame=temp;
+        if (temp1.id == 1){
+            can_frame=temp1;
         }
         //Notify all subscribers
         //Update Frame data
     }
     else 
     {
-        for (size_t i = 0; i < 9999; i++); //STUPID SLEEP?
+       // for (size_t i = 0; i < 9999; i++); //STUPID SLEEP?
     }
 }
 

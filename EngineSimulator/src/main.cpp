@@ -15,15 +15,14 @@ int main()
     CanWriter my_writer;
     FrameData output_data;
     Engine my_engine;
+    FrameData test;
 
     while(true){
         my_reader.read();
-        //my_reader.getData();
+        test = my_reader.getData();
         my_signal_decoder.setIpFrame(my_reader.getData());
         //Set Values Tran
         my_engine.setEngineStatus(my_signal_decoder.getEngineStatus());
-
-        //std::cout << my_signal_decoder.getEngineStatus() << std::endl;
 
         my_encoder.encodeEngineStatus(my_engine.getEngineStatus());
         my_encoder.encodeRPM(my_engine.getARPM());
@@ -32,7 +31,7 @@ int main()
 
         output_data = my_encoder.get_frame_data_op();
 
-        //my_writer.SendFrame(123,output_data.data);
+        my_writer.SendFrame(2,output_data.data);
         
         std::this_thread::sleep_for(std::chrono::milliseconds(10));
 
