@@ -1,7 +1,7 @@
 #ifndef CANENCODER_H
 #define CANENCODER_H
 
-#include "transmition.h"
+#include "signal_decoder.h"
 
 class CANEncoder
 {

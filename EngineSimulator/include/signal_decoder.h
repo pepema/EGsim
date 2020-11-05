@@ -28,19 +28,15 @@ namespace cnsts
 class SignalDecoder
 {
 private:
-    bool engine_status;
     FrameData frame_data_ip;
-    uint8_t acc_p;
     //FrameData frame_data_op;
     //CANReader myReader;
 public:
     SignalDecoder(/* args */);
     ~SignalDecoder();
-    void updateEngineStatus();
-    void updateAccP();
     void setIpFrame(const FrameData &);
     bool getEngineStatus();
-    uint8_t getAccP();
+    uint8_t getAcceleration();
     //void setOpFrame();
     //void updateFrameData();
     

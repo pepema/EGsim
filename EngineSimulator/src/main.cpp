@@ -19,7 +19,6 @@ int main()
         //my_reader.getData();
 
         my_signal_decoder.setIpFrame(my_reader.getData());
-        my_signal_decoder.updateEngineStatus();
         //Set Values Tran
 
         my_encoder.encodeEngineStatus(my_signal_decoder.getEngineStatus());
