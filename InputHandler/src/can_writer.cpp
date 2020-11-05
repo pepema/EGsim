@@ -21,4 +21,11 @@ void CanWriter::SendFrame(int id, uint8_t* data){
     this->cf_to_write.data[i]=data[i];
   }
   auto write_sc_status = this->socket_can.write(this->cf_to_write);
+
+  /*uint16_t print_rpm = this->cf_to_write.data[2] << 8 | this->cf_to_write.data[1];
+  std::cout << " Acceleration: "        << static_cast<int>(this->cf_to_write.data[6])
+            << " RPM: "                 << static_cast<int>(print_rpm)
+            << " EngineStatus: "        << static_cast<int>(this->cf_to_write.data[7])
+            << " Gear: "                << static_cast<int>(this->cf_to_write.data[4])
+            << '\r' << std::flush;*/
 }

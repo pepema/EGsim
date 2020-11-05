@@ -10,18 +10,10 @@ private:
     FrameData frame_data_op;
 public:
     CANEncoder(/* args */);
-    ~CANEncoder();
+    ~CANEncoder() = default;
     void encodeEngineStatus(const bool &);
     FrameData get_frame_data_op();
 };
-
-CANEncoder::CANEncoder(/* args */)
-{
-}
-
-CANEncoder::~CANEncoder()
-{
-}
 
 
 #endif

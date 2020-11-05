@@ -1,5 +1,5 @@
 #include "can_reader.h"
-
+#include <iostream>
 CANReader::CANReader()
 {
     if (socket_can.open("vcan0") != scpp::STATUS_OK) {
