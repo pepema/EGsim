@@ -10,7 +10,10 @@ void Engine::updateTRPM(const uint8_t& acceleration){
 
 void Engine::updateARPM(const uint8_t& acceleration){
     if (this->ARPM<this->TRPM){
-        this->ARPM=this->ARPM+10*acceleration/100;
+        this->ARPM=this->ARPM+(10*acceleration)/100;
+    }
+    else {
+        this->ARPM -= 10;
     }
 }
 

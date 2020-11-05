@@ -23,6 +23,8 @@ int main()
         my_signal_decoder.setIpFrame(my_reader.getData());
         //Set Values Tran
         my_engine.setEngineStatus(my_signal_decoder.getEngineStatus());
+        my_engine.updateTRPM(my_signal_decoder.getAcceleration());
+        my_engine.updateARPM(my_signal_decoder.getAcceleration());
 
         my_encoder.encodeEngineStatus(my_engine.getEngineStatus());
         my_encoder.encodeRPM(my_engine.getARPM());
@@ -33,7 +35,7 @@ int main()
 
         my_writer.SendFrame(2,output_data.data);
         
-        std::this_thread::sleep_for(std::chrono::milliseconds(10));
+        std::this_thread::sleep_for(std::chrono::nanoseconds(100));
 
         uint16_t print_rpm = output_data.data[2] << 8 | output_data.data[1];
         std::cout << " Speed: "               << static_cast<int>(output_data.data[0])
