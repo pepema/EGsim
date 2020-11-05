@@ -14,9 +14,4 @@ public:
     void encodeEngineStatus(const bool &);
     FrameData get_frame_data_op();
 };
-
-<<<<<<< HEAD
-
-=======
->>>>>>> 9a590215f4f070bcde0ec526e72724d8bdb1514e
 #endif
