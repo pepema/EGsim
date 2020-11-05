@@ -1,7 +1,7 @@
 #include "can_reader.h"
 #include "transmition.h"
 #include "can_encoder.h"
-#include "can_writer.hpp"
+#include "../../InputHandler/include/can_writer.hpp"
 
 int main()
 {
@@ -10,7 +10,7 @@ int main()
     CANReader my_reader;
     Transmition my_transmition;
     CANEncoder my_encoder;
-    CanWriter my_writer(123,8);
+    CanWriter my_writer;
     FrameData output_data;
 
     my_reader.read();
