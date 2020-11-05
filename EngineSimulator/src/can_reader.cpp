@@ -29,9 +29,12 @@ void CANReader::read()
 FrameData CANReader::getData()
 {
     FrameData frameDataToPass;
-    for (size_t i = 0; i < 8; i++)
+    if(can_frame.id == 123)
     {
-        frameDataToPass.data[i] = can_frame.data[i];    //Should we do this tcopy by ref?
+        for (size_t i = 0; i < 8; i++)
+        {
+            frameDataToPass.data[i] = can_frame.data[i];    //Should we do this tcopy by ref?
+        }
     }
     return frameDataToPass;
 }
