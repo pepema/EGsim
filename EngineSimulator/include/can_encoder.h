@@ -1,7 +1,7 @@
 #ifndef CANENCODER_H
 #define CANENCODER_H
 
-#include "transmition.h"
+#include "signal_decoder.h"
 
 class CANEncoder
 {
@@ -12,6 +12,7 @@ public:
     CANEncoder(/* args */);
     ~CANEncoder() = default;
     void encodeEngineStatus(const bool &);
+    void encodeRPM(const uint16_t&);
     FrameData get_frame_data_op();
 };
 #endif
