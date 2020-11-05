@@ -1,5 +1,5 @@
-#ifndef TRANSMITION_H
-#define TRANSMITION_H
+#ifndef SignalDecoder_H
+#define SignalDecoder_H
 #include <iostream>
 //#include <vector>
 #include "can_reader.h"
@@ -25,19 +25,22 @@ namespace cnsts
     static const uint GEAR = 0; // Gear in Neutral = 0
 }
 
-class Transmition
+class SignalDecoder
 {
 private:
     bool engine_status;
     FrameData frame_data_ip;
+    uint8_t acc_p;
     //FrameData frame_data_op;
     //CANReader myReader;
 public:
-    Transmition(/* args */);
-    ~Transmition();
+    SignalDecoder(/* args */);
+    ~SignalDecoder();
     void updateEngineStatus();
+    void updateAccP();
     void setIpFrame(const FrameData &);
     bool getEngineStatus();
+    uint8_t getAccP();
     //void setOpFrame();
     //void updateFrameData();
     

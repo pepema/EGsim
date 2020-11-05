@@ -1,19 +1,16 @@
 #include "can_reader.h"
-#include "transmition.h"
+#include "signal_decoder.h"
 #include "can_encoder.h"
-<<<<<<< HEAD
 #include "can_writer.hpp"
 #include <thread>
-=======
 #include "../../InputHandler/include/can_writer.hpp"
->>>>>>> 9a590215f4f070bcde0ec526e72724d8bdb1514e
 
 int main()
 {
     // Read
     //Reader and read
     CANReader my_reader;
-    Transmition my_transmition;
+    SignalDecoder my_signal_decoder;
     CANEncoder my_encoder;
     CanWriter my_writer;
     FrameData output_data;
@@ -22,11 +19,11 @@ int main()
         my_reader.read();
         //my_reader.getData();
 
-        my_transmition.setIpFrame(my_reader.getData());
-        my_transmition.updateEngineStatus();
+        my_signal_decoder.setIpFrame(my_reader.getData());
+        my_signal_decoder.updateEngineStatus();
         //Set Values Tran
 
-        my_encoder.encodeEngineStatus(my_transmition.getEngineStatus());
+        my_encoder.encodeEngineStatus(my_signal_decoder.getEngineStatus());
 
         //CW send frame
 

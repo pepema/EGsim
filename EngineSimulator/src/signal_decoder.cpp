@@ -1,18 +1,19 @@
-#include "transmition.h" 
+#include "signal_decoder.h" 
 
-Transmition::Transmition(/* args */)
+SignalDecoder::SignalDecoder(/* args */)
 {
     engine_status = false;
+    acc_p = 0;
 
     
 }
 
-Transmition::~Transmition()
+SignalDecoder::~SignalDecoder()
 {
 }
 
 
-void Transmition::updateEngineStatus()
+void SignalDecoder::updateEngineStatus()
 {
     if(frame_data_ip.data[7] == 0)
     {
@@ -26,14 +27,24 @@ void Transmition::updateEngineStatus()
     }
 }
 
-/*void Transmition::setFrameData(const uint8_t (&frameDataVal)[8])
+void SignalDecoder::updateAccP()
+{
+    acc_p=frame_data_ip.data[6];
+}
+
+uint8_t SignalDecoder::getAccP()
+{
+    return acc_p;
+}
+
+/*void SignalDecoder::setFrameData(const uint8_t (&frameDataVal)[8])
 {
     for (size_t i = 0; i < 8; i++)
     {
         frameDataIp.data[i] = frameDataVal[i];
     }
 }*/
-void Transmition::setIpFrame(const FrameData & frame_data_val)
+void SignalDecoder::setIpFrame(const FrameData & frame_data_val)
 {
     for (size_t i = 0; i < 8; i++)
     {
@@ -41,19 +52,19 @@ void Transmition::setIpFrame(const FrameData & frame_data_val)
     }
 }
 
-bool Transmition::getEngineStatus()
+bool SignalDecoder::getEngineStatus()
 {
     return engine_status;
 }
 
 /*
-void Transmition::updateFrameData()
+void SignalDecoder::updateFrameData()
 {
     CANReader *myReader = &CANReader::getInstance();
     frameDataIp = myReader->getData();
 }
 
-frameData Transmition::getData()
+frameData SignalDecoder::getData()
 {
     return frameDataOp;
 }
