@@ -1,7 +1,6 @@
-#include "can_reader.h"
 #include "signal_decoder.h"
 #include "can_encoder.h"
-#include "can_writer.hpp"
+#include "can_reader_writer.hpp"
 #include <thread>
 #include <iomanip>
 #include "engine.h"
@@ -10,16 +9,16 @@ int main()
 {
     // Read
     //Reader and read
-    CANReader my_reader;
+    //CANReader my_reader;
     SignalDecoder my_signal_decoder;
     CANEncoder my_encoder;
-    CanWriter my_writer;
+    CanReaderWriter my_reader_writer;
     FrameData output_data;
     Engine my_engine;
 
     while(true){
-        my_reader.read();
-        my_signal_decoder.setIpFrame(my_reader.getData());
+        my_reader_writer.read();
+        my_signal_decoder.setIpFrame(my_reader_writer.getData());
         //Set Values Tran
         my_engine.setEngineStatus(my_signal_decoder.getEngineStatus());
         my_engine.updateTRPM(my_signal_decoder.getAcceleration());
@@ -32,9 +31,9 @@ int main()
 
         output_data = my_encoder.get_frame_data_op();
 
-        my_writer.SendFrame(2,output_data.data);
+        my_reader_writer.SendFrame(2,output_data.data);
         
-        std::this_thread::sleep_for(std::chrono::nanoseconds(100));
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
 
        uint16_t print_rpm = output_data.data[2] << 8 | output_data.data[1];
         std::cout << " Speed: "               << std::setfill(' ') << std::setw(3) << static_cast<int>(output_data.data[0])

@@ -7,7 +7,7 @@ add_executable(InputHandler
                src/input_handler.cpp
                src/socketcan_cpp.cpp
                src/main.cpp
-               src/can_writer.cpp
+               src/can_reader_writer.cpp
                src/can_encoder.cpp
                )
 

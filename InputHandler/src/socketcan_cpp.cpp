@@ -12,6 +12,9 @@
 #include <sys/ioctl.h>
 #include <sys/socket.h>
 
+#include <fcntl.h>
+#include <iostream>
+
 #include <linux/can/raw.h>
 /* CAN DLC to real data length conversion helpers */
 
@@ -94,7 +97,6 @@ namespace scpp
             if (setsockopt(m_socket, SOL_CAN_RAW, CAN_RAW_FD_FRAMES,
                 &enable_canfd, sizeof(enable_canfd))) 
             {
-                
                 return STATUS_ENABLE_FD_SUPPORT_ERROR;
             }
 
@@ -125,6 +127,8 @@ namespace scpp
             perror("bind");
             return STATUS_BIND_ERROR;
         }
+
+        fcntl(m_socket, F_SETFL, O_NONBLOCK);
 
         return STATUS_OK;
     }
