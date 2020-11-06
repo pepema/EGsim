@@ -9,7 +9,11 @@ void CanEncoder::Encode(int input, uint8_t* data){
     if (data[6]>0) data[6]-=10;
   } else if(input == 'A'){
     if(data[6]<100) data[6]+=10;
-  } else {
-    //std::cout << "this key was pressed: " << ch << std::endl;
+  } else if(input == 'd'){
+    data[5] = 1;
+  } else if(input == 'n'){
+    data[5] = 0;
+  } else if(input == 'r'){
+    data[5] = 2;
   }
 }
