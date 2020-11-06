@@ -12,7 +12,7 @@ void Engine::updateTRPM(const uint8_t& acceleration){
     
 
 void Engine::updateARPM(const uint8_t& acceleration){
-    double vroom=static_cast<double>(this->TRPM-this->ARPM)/40000;
+    double vroom=static_cast<double>(this->TRPM-this->ARPM)/400;
     this->ARPM+=vroom;
     }
 

@@ -16,11 +16,8 @@ int main()
     CanReaderWriter my_reader_writer;
     FrameData output_data;
     Engine my_engine;
-<<<<<<< HEAD
     Gearbox my_gearbox;
     FrameData test;
-=======
->>>>>>> c1b15c6d556657dd0f9ba22868a7baeb9cc01f5c
 
     while(true){
         my_reader_writer.read();
@@ -35,6 +32,8 @@ int main()
         my_encoder.encodeEngineStatus(my_engine.getEngineStatus());
         my_encoder.encodeRPM(my_engine.getARPM());
         my_encoder.encodeSpeed(my_gearbox.getSpeed());
+        my_encoder.encodeGear(my_gearbox.getGear());
+
         //CW send frame
 
         output_data = my_encoder.get_frame_data_op();
@@ -47,6 +46,7 @@ int main()
         std::cout << " Speed: "               << std::setfill(' ') << std::setw(3) << static_cast<int>(output_data.data[0])
                   << " RPM: "                 << std::setfill(' ') << std::setw(5) << static_cast<int>(print_rpm)
                   << " EngineStatus: "        << static_cast<int>(output_data.data[3])
+                  << " Gear: "                << std::setfill(' ') << std::setw(1) << output_data.data[4]
                   << " Acceleration: "        << std::setfill(' ') << std::setw(3) << static_cast<int>(my_signal_decoder.getAcceleration()) << "%"
                   << '\r' << std::flush;
     }

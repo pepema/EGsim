@@ -12,4 +12,5 @@ add_executable(EngineSimulator
                ../InputHandler/src/socketcan_cpp.cpp
                #src/can_reader.cpp
                src/engine.cpp
+               src/gearbox.cpp
                )

@@ -26,10 +26,18 @@ void CANEncoder::encodeRPM(const uint16_t& actual_rpm){
     frame_data_op.data[2] = actual_rpm >> 8;
     frame_data_op.data[1] = actual_rpm & 255;
 }
- void CANEncoder::encodeSpeed(const uint16_t& speed){
+void CANEncoder::encodeSpeed(const uint16_t& speed){
         frame_data_op.data[0] = speed;
 
  }
+void CANEncoder::encodeGear(const Gear& gear){
+    if (gear == Gear::D)
+        frame_data_op.data[4] = 'D';
+    else if (gear == Gear::R)
+        frame_data_op.data[4] = 'R';
+    else
+        frame_data_op.data[4] = 'N';
+}
 
 FrameData CANEncoder::get_frame_data_op()
 {
