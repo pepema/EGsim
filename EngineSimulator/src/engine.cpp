@@ -1,20 +1,37 @@
 #include "engine.h"
 
-void Engine::updateTRPM(const uint8_t& acceleration){
+void Engine::updateTRPM(const uint8_t& acceleration, const uint8_t& brake){
     if(this->engine_STC)
-        if (acceleration==0)
-            this->TRPM=700;  
+        if (acceleration >= brake)
+            this->TRPM=700+(10000-700)*(acceleration-brake)/100;
         else
-            this->TRPM=700+(10000-700)*acceleration/100;
+            this->TRPM=700;
     else
         this->TRPM=0;
     }
     
 
-void Engine::updateARPM(const uint8_t& acceleration){
-    double vroom=static_cast<double>(this->TRPM-this->ARPM)/400;
-    this->ARPM+=vroom;
+void Engine::updateARPM(const uint8_t& brake){
+    double vroom=static_cast<double>(this->TRPM-this->ARPM)/300;
+
+    if (brake == 0){
+        if (vroom > 0){
+            this->ARPM+=vroom;
+        }
+        else if (vroom < 0){
+            this->ARPM-=3;
+        }
     }
+    else if (brake > 0){
+        if (vroom > 0){
+            this->ARPM+=vroom;
+        }
+        else if (vroom < 0){
+            this->ARPM-=3 + 3*(1+brake/30);
+        }
+    }       
+    
+}
 
 
 Engine::Engine(){

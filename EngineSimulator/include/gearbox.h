@@ -12,7 +12,7 @@ private:
     uint16_t speed;
 
 public:
-    void updateGear(const uint8_t& gear);
+    void updateGear(const uint8_t& gearin, const uint8_t& brake);
     void updateSpeed(const uint16_t& ARPM);
     void updateGearnumber();
     Gear getGear();

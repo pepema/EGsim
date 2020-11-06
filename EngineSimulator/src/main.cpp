@@ -24,9 +24,9 @@ int main()
         my_signal_decoder.setIpFrame(my_reader_writer.getData());
         //Set Values Tran
         my_engine.setEngineStatus(my_signal_decoder.getEngineStatus());
-        my_gearbox.updateGear(my_signal_decoder.getGearinput());
-        my_engine.updateTRPM(my_signal_decoder.getAcceleration());
-        my_engine.updateARPM(my_signal_decoder.getAcceleration());
+        my_gearbox.updateGear(my_signal_decoder.getGearinput(), my_signal_decoder.getBrakeinput());
+        my_engine.updateTRPM(my_signal_decoder.getAcceleration(), my_signal_decoder.getBrakeinput());
+        my_engine.updateARPM(my_signal_decoder.getBrakeinput());
         my_gearbox.updateSpeed(my_engine.getARPM());
         
         my_encoder.encodeEngineStatus(my_engine.getEngineStatus());
@@ -47,6 +47,7 @@ int main()
                   << " RPM: "                 << std::setfill(' ') << std::setw(5) << static_cast<int>(print_rpm)
                   << " EngineStatus: "        << static_cast<int>(output_data.data[3])
                   << " Gear: "                << std::setfill(' ') << std::setw(1) << output_data.data[4]
+                  << " Brake: "               << std::setfill(' ') << std::setw(3) << static_cast<int>(my_signal_decoder.getBrakeinput()) << "%"
                   << " Acceleration: "        << std::setfill(' ') << std::setw(3) << static_cast<int>(my_signal_decoder.getAcceleration()) << "%"
                   << '\r' << std::flush;
     }

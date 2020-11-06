@@ -45,6 +45,10 @@ uint8_t SignalDecoder::getGearinput(){
     return frame_data_ip.data[5];
 }
 
+uint8_t SignalDecoder::getBrakeinput(){
+    return frame_data_ip.data[4];
+
+}
 /*
 void SignalDecoder::updateFrameData()
 {

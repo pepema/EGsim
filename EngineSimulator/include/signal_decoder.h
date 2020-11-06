@@ -38,6 +38,7 @@ public:
     bool getEngineStatus();
     uint8_t getAcceleration();
     uint8_t getGearinput();
+    uint8_t getBrakeinput();
     //void setOpFrame();
     //void updateFrameData();
     
