@@ -16,11 +16,9 @@ int main()
     CanWriter my_writer;
     FrameData output_data;
     Engine my_engine;
-    FrameData test;
 
     while(true){
         my_reader.read();
-        test = my_reader.getData();
         my_signal_decoder.setIpFrame(my_reader.getData());
         //Set Values Tran
         my_engine.setEngineStatus(my_signal_decoder.getEngineStatus());
