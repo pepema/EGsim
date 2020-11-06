@@ -37,6 +37,7 @@ public:
     void setIpFrame(const FrameData &);
     bool getEngineStatus();
     uint8_t getAcceleration();
+    uint8_t getGearinput();
     //void setOpFrame();
     //void updateFrameData();
     

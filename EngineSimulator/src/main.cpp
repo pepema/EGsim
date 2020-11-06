@@ -5,6 +5,7 @@
 #include <thread>
 #include <iomanip>
 #include "engine.h"
+#include "gearbox.h"
 
 int main()
 {
@@ -16,6 +17,7 @@ int main()
     CanWriter my_writer;
     FrameData output_data;
     Engine my_engine;
+    Gearbox my_gearbox;
     FrameData test;
 
     while(true){
@@ -24,12 +26,14 @@ int main()
         my_signal_decoder.setIpFrame(my_reader.getData());
         //Set Values Tran
         my_engine.setEngineStatus(my_signal_decoder.getEngineStatus());
+        my_gearbox.updateGear(my_signal_decoder.getGearinput());
         my_engine.updateTRPM(my_signal_decoder.getAcceleration());
         my_engine.updateARPM(my_signal_decoder.getAcceleration());
-
+        my_gearbox.updateSpeed(my_engine.getARPM());
+        
         my_encoder.encodeEngineStatus(my_engine.getEngineStatus());
         my_encoder.encodeRPM(my_engine.getARPM());
-        my_encoder.encodeSpeed(my_engine.getARPM());
+        my_encoder.encodeSpeed(my_gearbox.getSpeed());
         //CW send frame
 
         output_data = my_encoder.get_frame_data_op();

@@ -10,7 +10,7 @@ SignalDecoder::~SignalDecoder()
 
 uint8_t SignalDecoder::getAcceleration()
 {
-    return frame_data_ip.data[6];;
+    return frame_data_ip.data[6];
 }
 
 /*void SignalDecoder::setFrameData(const uint8_t (&frameDataVal)[8])
@@ -40,6 +40,9 @@ bool SignalDecoder::getEngineStatus()
         //frame_data_op.data[3] = 1;
         return true;
     }
+}
+uint8_t SignalDecoder::getGearinput(){
+    return frame_data_ip.data[5];
 }
 
 /*
