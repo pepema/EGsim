@@ -1,0 +1,4 @@
+cmake_minimum_required(VERSION 3.15)
+project(Bootcamp)
+add_subdirectory(InputHandler)
+add_subdirectory(EngineSimulator)
