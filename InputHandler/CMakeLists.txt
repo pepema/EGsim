@@ -2,13 +2,15 @@ cmake_minimum_required(VERSION 3.15)
 project(InputHandler)
 
 include_directories(include)
+include_directories(../Utils/socketcan)
+include_directories(../Utils/canreaderwriter)
 
 add_executable(InputHandler 
-               src/input_handler.cpp
-               src/socketcan_cpp.cpp
                src/main.cpp
-               src/can_reader_writer.cpp
                src/can_encoder.cpp
+               src/input_handler.cpp
+               ../Utils/socketcan/socketcan_cpp.cpp
+               ../Utils/canreaderwriter/can_reader_writer.cpp
                )
 
 target_link_libraries(InputHandler ncurses)
