@@ -1,3 +1,6 @@
+#ifndef CAN_ENCODER_HPP
+#define CAN_ENCODER_HPP
+
 #include <iostream>
 
 class CanEncoder{
@@ -6,3 +9,5 @@ public:
   CanEncoder() = default;
   ~CanEncoder() = default;
 };
+
+#endif

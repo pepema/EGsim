@@ -6,17 +6,13 @@
 
 int main(){
   CanReaderWriter reader_writer;
-  CanEncoder encoder;
-  InputHandler key_press_handler;
+  InputHandler handler;
   uint8_t data [8] = {0,0,0,0,0,0,0,0};
-  int key_pressed;
 
-  while (true && key_pressed != 27) {
-    key_pressed = key_press_handler.GetPressedKey();
-    if(key_pressed != -1)
-      encoder.Encode(key_pressed,data);
+  while(handler.Run(data)){
     reader_writer.SendFrame(1, data);
     std::this_thread::sleep_for(std::chrono::milliseconds(10));
   }
+  
   return 0;
 }

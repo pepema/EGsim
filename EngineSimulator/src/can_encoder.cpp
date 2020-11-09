@@ -2,14 +2,14 @@
 
 CANEncoder::CANEncoder()
 {
-    frame_data_op.data[0] = cnsts::SPEED; 
+    frame_data_op.data[0] = /*cnsts::SPEED*/0; 
         
-    frame_data_op.data[1] = cnsts::LRPM;
-    frame_data_op.data[2] = cnsts::MRPM;
+    frame_data_op.data[1] = /*cnsts::LRPM*/0;
+    frame_data_op.data[2] = /*cnsts::MRPM*/0;
 
-    frame_data_op.data[3] = cnsts::ENGSTATUS;
+    frame_data_op.data[3] = /*cnsts::ENGSTATUS*/0;
 
-    frame_data_op.data[4] = cnsts::GEAR;
+    frame_data_op.data[4] = /*cnsts::GEAR*/0;
 
     //Reserved Data bytes
     frame_data_op.data [5] = 0;
