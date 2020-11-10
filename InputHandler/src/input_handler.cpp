@@ -28,9 +28,8 @@ void InputHandler::Run(uint8_t* data, bool& exit){
         input_ready = true;
         if(key_pressed == 27){
           exit = 1;
-        } else {
-          encoder.Encode(key_pressed,data);
-        } 
+        }
+        encoder.Encode(key_pressed,data);
       }
     cv.notify_all();
     }

@@ -5,6 +5,12 @@ CanEncoder::CanEncoder(){
   valid_keys.insert({'s',{7,0}});
   valid_keys.insert({'A',{6,10}});
   valid_keys.insert({'a',{6,-10}});
+  valid_keys.insert({'d',{5,1}});
+  valid_keys.insert({'n',{5,0}});
+  valid_keys.insert({'r',{5,2}});
+  valid_keys.insert({'B',{4,10}});
+  valid_keys.insert({'b',{4,-10}});
+  valid_keys.insert({27,{0,1}});
 }
 
 bool CanEncoder::ValidKey(int a, uint8_t* data){

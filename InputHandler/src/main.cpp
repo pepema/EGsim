@@ -1,6 +1,5 @@
 #include <iostream>
 #include <thread>
-#include <future>
 #include "can_reader_writer.hpp"
 #include "input_handler.hpp"
 #include "can_encoder.hpp"
@@ -17,7 +16,7 @@ int main(){
       std::unique_lock<std::mutex> lk(handler.m);
       handler.cv.wait(lk,[&handler]{return handler.input_ready;});
       if(exit){
-        reader_writer.SendShutdownCommand();
+        reader_writer.SendShutdownCommand(1,data);
         break;
       }
       reader_writer.SendFrame(1, data);
