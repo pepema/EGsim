@@ -17,6 +17,7 @@ public:
   void SendFrame(int id, uint8_t* data);
   void read();
   FrameData getData();
+  void SendShutdownCommand();
 private:
   scpp::CanFrame cf_to_write;
   scpp::SocketCan socket_can;

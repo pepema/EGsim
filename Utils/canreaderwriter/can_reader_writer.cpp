@@ -49,3 +49,9 @@ FrameData CanReaderWriter::getData()
     }
     return frameDataToPass;
 }
+
+void CanReaderWriter::SendShutdownCommand(){
+  for(int i =0;i<4;i++){
+    auto write_sc_status = this->socket_can.write(this->cf_to_write);
+  }
+}

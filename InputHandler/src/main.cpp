@@ -12,9 +12,18 @@ int main(){
   bool exit = 0;
   std::thread t(&InputHandler::Run,&handler,data,std::ref(exit));
   
-  while(!exit){
-    reader_writer.SendFrame(1, data);
-    std::this_thread::sleep_for(std::chrono::milliseconds(10));
+  while(1){
+    {
+      std::unique_lock<std::mutex> lk(handler.m);
+      handler.cv.wait(lk,[&handler]{return handler.input_ready;});
+      if(exit){
+        reader_writer.SendShutdownCommand();
+        break;
+      }
+      reader_writer.SendFrame(1, data);
+      handler.input_ready = false;
+    }
+    //std::this_thread::sleep_for(std::chrono::milliseconds(10));
   }
   t.join();
   return 0;
