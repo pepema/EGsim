@@ -67,11 +67,11 @@ int main()
     bool app_start = true;
     CanReaderWriter my_reader_writer;
     std::promise<bool> start_cond_ru_p; //promise for readUpdate
-    std::promise<bool> start_cond_pw_p;  //promise for processWrite
+    //std::promise<bool> start_cond_pw_p;  //promise for processWrite
     //std::future<bool> start_cond_f = start_cond_p.get_future();
 
     start_cond_ru_p.set_value(true);
-    start_cond_pw_p.set_value(true);
+    //start_cond_pw_p.set_value(true);
 
     std::thread read_thread (readUpdate, my_reader_writer, start_cond_ru_p);
 
