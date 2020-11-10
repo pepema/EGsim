@@ -13,7 +13,7 @@ add_executable(InputHandler
                ../Utils/canreaderwriter/can_reader_writer.cpp
                )
 
-target_link_libraries(InputHandler ncurses)
+target_link_libraries(InputHandler ncurses pthread)
 
 set_target_properties(InputHandler
   PROPERTIES

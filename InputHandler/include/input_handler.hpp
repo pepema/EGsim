@@ -8,7 +8,7 @@ public:
   InputHandler();
   ~InputHandler();
   int GetPressedKey();
-  bool Run(uint8_t*);
+  void Run(uint8_t*, bool&);
 private:
   CanEncoder encoder;
   int ch, key_pressed;

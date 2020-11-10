@@ -13,12 +13,17 @@ int InputHandler::GetPressedKey(){
   return this->ch;
 }
 
-bool InputHandler::Run(uint8_t* data){
-  key_pressed = this->GetPressedKey();
-  if(key_pressed != -1 && key_pressed != 27)
-    encoder.Encode(key_pressed,data);
-  else if (key_pressed == 27) return 0;
-  return 1;
+void InputHandler::Run(uint8_t* data, bool& exit){
+  while(1){
+    key_pressed = this->GetPressedKey();
+    if(key_pressed != -1 && key_pressed != 27)
+      encoder.Encode(key_pressed,data);
+    else if (key_pressed == 27) {
+      exit = 1;
+      break;
+    }
+    exit = 0;
+  }
 }
 
 InputHandler::~InputHandler(){
