@@ -49,3 +49,10 @@ FrameData CanReaderWriter::getData()
     }
     return frameDataToPass;
 }
+
+void CanReaderWriter::SendShutdownCommand(int id, uint8_t* data){
+  for(int i =0;i<4;i++){
+    std::this_thread::sleep_for(std::chrono::milliseconds(10));
+    this->SendFrame(id,data);
+  }
+}
