@@ -10,6 +10,7 @@ private:
     bool engine_STC;
     uint16_t  TRPM;
     double ARPM;
+    bool hazard;
 
 public:
     void setEngineStatus(const bool& ES);
@@ -19,6 +20,8 @@ public:
     bool getEngineStatus();
 
     uint16_t getARPM();
+    void setHazard(const bool& hazard);
+    bool getHazard();
 
     Engine();
  

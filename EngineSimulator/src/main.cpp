@@ -39,6 +39,16 @@ void processWrite(CanReaderWriter& can_r_w, bool app_start)
     {
         my_signal_decoder.setIpFrame(can_r_w.getData());
         //Set Values Tran
+        
+        //my_engine.setHazard(my_signal_decoder.getHazard());
+        my_engine.setHazard(true);
+        if(my_engine.getHazard() == true)
+        {
+            //std::cout<<"Failure!!!"<<std::endl<<"Bad coding"<<std::endl<<std::endl;
+            //std::this_thread::sleep_for(std::chrono::milliseconds(500));
+            app_start = false;
+            //break;
+        }
         my_engine.setEngineStatus(my_signal_decoder.getEngineStatus());
         my_gearbox.updateGear(my_signal_decoder.getGearinput(), my_signal_decoder.getBrakeinput());
         my_engine.updateTRPM(my_signal_decoder.getAcceleration(), my_signal_decoder.getBrakeinput());
@@ -66,6 +76,9 @@ void processWrite(CanReaderWriter& can_r_w, bool app_start)
                   << " Brake: "               << std::setfill(' ') << std::setw(3) << static_cast<int>(my_signal_decoder.getBrakeinput()) << "%"
                   << " Acceleration: "        << std::setfill(' ') << std::setw(3) << static_cast<int>(my_signal_decoder.getAcceleration()) << "%"
                   << '\r' << std::flush;
+
+        //std::this_thread::sleep_for(std::chrono::milliseconds(500));
+        //std::cout<<std::endl;
     }
 }
 

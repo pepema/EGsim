@@ -49,6 +49,21 @@ uint8_t SignalDecoder::getBrakeinput(){
     return frame_data_ip.data[4];
 
 }
+
+bool SignalDecoder::getHazard()
+{
+    if(frame_data_ip.data[0] == 0)
+    {
+        return false;
+        //frame_data_op.data[3] = 0;
+    }
+    else
+    {
+        
+        //frame_data_op.data[3] = 1;
+        return true;
+    }
+}
 /*
 void SignalDecoder::updateFrameData()
 {

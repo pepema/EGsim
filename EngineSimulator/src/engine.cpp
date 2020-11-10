@@ -38,6 +38,7 @@ Engine::Engine(){
     engine_STC = false;
     ARPM = 0;
     TRPM = 0;
+    hazard = false;
 }
 
 uint16_t Engine::getARPM(){
@@ -49,4 +50,18 @@ bool Engine::getEngineStatus(){
 }
 void Engine::setEngineStatus(const bool& ES){
     engine_STC = ES;
+}
+
+void Engine::setHazard(const bool& hazard)
+{
+    if(hazard == true)
+    {
+        engine_STC = false;
+    }
+    this->hazard = hazard;
+}
+
+bool Engine::getHazard()
+{
+    return hazard;
 }
