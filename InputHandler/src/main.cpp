@@ -22,7 +22,6 @@ int main(){
       reader_writer.SendFrame(1, data);
       handler.input_ready = false;
     }
-    //std::this_thread::sleep_for(std::chrono::milliseconds(10));
   }
   t.join();
   return 0;
