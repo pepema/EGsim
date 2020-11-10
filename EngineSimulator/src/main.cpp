@@ -6,17 +6,24 @@
 #include "engine.h"
 #include "gearbox.h"
 #include <future>
+#include <atomic>
 
-void readUpdate(CanReaderWriter& can_r_w, std::promise<bool> app_start_p)
+void readUpdate(CanReaderWriter& can_r_w, std::promise<bool>* app_start)
 {
-    std::future<bool> start_cond_f = app_start_p.get_future();
+    std::future<bool> start_cond_f = app_start->get_future();
 
-    while(start_cond_f.get() == true)
+    while(start_cond_f.wait_for(std::chrono::milliseconds(10)) != std::future_status::ready)
     {
         can_r_w.read();
         can_r_w.updateReadData();
     }
 }
+
+/*void readUpdate(CanReaderWriter& can_r_w)
+{
+    ;
+}
+*/
 
 void processWrite(CanReaderWriter& can_r_w, bool app_start)
 {
@@ -67,13 +74,17 @@ int main()
     bool app_start = true;
     CanReaderWriter my_reader_writer;
     std::promise<bool> start_cond_ru_p; //promise for readUpdate
+    //std::atomic_bool my_flag{true};
     //std::promise<bool> start_cond_pw_p;  //promise for processWrite
     //std::future<bool> start_cond_f = start_cond_p.get_future();
 
-    start_cond_ru_p.set_value(true);
+    //std:condition_variable cv;
+
+    //start_cond_ru_p.set_value(true);
     //start_cond_pw_p.set_value(true);
 
-    std::thread read_thread (readUpdate, my_reader_writer, start_cond_ru_p);
+    std::thread read_thread (readUpdate, std::ref(my_reader_writer), &start_cond_ru_p);
+    //std::thread read_thread (readUpdate, std::ref(my_reader_writer));
 
     //app_start = false;
     //appstart =false;
@@ -86,8 +97,11 @@ int main()
     
     //The below statements will NEVER be called!
 
+    //start_cond_ru_p.set_value(false);
     start_cond_ru_p.set_value(false);
+    //my_flag = false;
     read_thread.join();
+    //read_thread.detach();
 
     return 0;
 }
