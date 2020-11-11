@@ -7,7 +7,7 @@
 int main(){
   CanReaderWriter reader_writer;
   InputHandler handler;
-  uint8_t data [8] = {0,0,0,0,0,0,0,0};
+  uint8_t* data = reader_writer.getWriteData();
   bool exit = 0;
   std::thread t(&InputHandler::Run,&handler,data,std::ref(exit));
   

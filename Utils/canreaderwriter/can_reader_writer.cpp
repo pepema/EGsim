@@ -64,3 +64,8 @@ void CanReaderWriter::updateReadData()
         }
     }
 }
+
+
+uint8_t* CanReaderWriter::getWriteData(){
+  return write_data.data;
+}
