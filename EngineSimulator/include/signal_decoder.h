@@ -39,6 +39,7 @@ public:
     uint8_t getAcceleration();
     uint8_t getGearinput();
     uint8_t getBrakeinput();
+    bool getHazard();
     //void setOpFrame();
     //void updateFrameData();
     

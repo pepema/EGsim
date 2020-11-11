@@ -15,6 +15,8 @@ add_executable(EngineSimulator
                ../Utils/canreaderwriter/can_reader_writer.cpp
                )
 
+target_link_libraries(EngineSimulator pthread)
+
 set_target_properties(EngineSimulator
   PROPERTIES
   ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"
