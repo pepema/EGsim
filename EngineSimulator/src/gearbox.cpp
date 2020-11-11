@@ -1,5 +1,4 @@
 #include "gearbox.h"
-#include <iostream>
 
 Gearbox::Gearbox(){
     gear=Gear::N;
