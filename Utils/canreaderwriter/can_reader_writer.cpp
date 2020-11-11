@@ -1,3 +1,4 @@
+#include <cstring>
 #include "can_reader_writer.hpp"
 
 CanReaderWriter::CanReaderWriter(){
@@ -57,7 +58,11 @@ void CanReaderWriter::updateReadData()
 {
   if(cf_to_read.id == 1)
     {
+        
         std::lock_guard<std::mutex> lk_grd(read_data_buffer.mtx);
+        
+        std::memcpy(read_data_buffer.frame_data.data, cf_to_read.data, 8*(sizeof(uint8_t)));
+        
         for (size_t i = 0; i < 8; i++)
         {
             read_data_buffer.frame_data.data[i] = cf_to_read.data[i];    //Should we do this tcopy by ref?
