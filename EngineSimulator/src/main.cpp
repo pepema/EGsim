@@ -8,7 +8,7 @@
 #include "gearbox.h"
 
 
-void readUpdate(CanReaderWriter& can_r_w, std::promise<bool>* app_start)
+void readUpdate(CanReaderWriter& can_r_w, std::promise<bool>* app_start, bool * start_cond_ru)
 {
     std::future<bool> start_cond_f = app_start->get_future();
 
@@ -49,8 +49,6 @@ void processWrite(CanReaderWriter& can_r_w, bool app_start)
         my_encoder.encodeSpeed(my_gearbox.getSpeed());
         my_encoder.encodeGear(my_gearbox.getGear());
 
-        //CW send frame
-
         output_data = my_encoder.get_frame_data_op();
 
         can_r_w.SendFrame(2,output_data.data);
@@ -72,9 +70,10 @@ int main()
 {
     bool app_start = true;
     CanReaderWriter my_reader_writer;
-    std::promise<bool> start_cond_ru_p; 
+    std::promise<bool> start_cond_ru_p;
+    bool start_cond_ru = true; 
 
-    std::thread read_thread (readUpdate, std::ref(my_reader_writer), &start_cond_ru_p);
+    std::thread read_thread (readUpdate, std::ref(my_reader_writer), &start_cond_ru_p, &start_cond_ru);
  
     processWrite(my_reader_writer,app_start);
 
