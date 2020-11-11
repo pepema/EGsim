@@ -1,7 +1,7 @@
 #include "signal_decoder.h" 
 
 SignalDecoder::SignalDecoder(/* args */)
-{  
+{ 
 }
 
 SignalDecoder::~SignalDecoder()
@@ -51,7 +51,7 @@ uint8_t SignalDecoder::getBrakeinput(){
 }
 
 bool SignalDecoder::getHazard()
-{
+{   
     if(frame_data_ip.data[0] == 0)
     {
         return false;
@@ -59,7 +59,6 @@ bool SignalDecoder::getHazard()
     }
     else
     {
-        
         //frame_data_op.data[3] = 1;
         return true;
     }
