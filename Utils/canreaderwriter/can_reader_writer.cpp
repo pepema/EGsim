@@ -11,6 +11,8 @@ CanReaderWriter::CanReaderWriter(){
   cf_to_write.data[length] = {};
   for(int i =0;i<length;i++){
     cf_to_write.data[i]=0;
+    cf_to_read.data[i]=0;
+    read_data_buffer.frame_data.data[i]=0;
   }
 }
 

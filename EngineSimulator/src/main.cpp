@@ -39,7 +39,6 @@ void processWrite(CanReaderWriter& can_r_w, bool app_start)
     {
         my_signal_decoder.setIpFrame(can_r_w.getData());
         //Set Values Tran
-        
         my_engine.setHazard(my_signal_decoder.getHazard());
         //my_engine.setHazard(true);
         if(my_engine.getHazard() == true)
