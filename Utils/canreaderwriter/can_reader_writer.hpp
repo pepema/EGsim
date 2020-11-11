@@ -7,7 +7,6 @@
 #include <mutex>
 
 struct FrameData{
-    //std::vector<uint8_t> data[64];
     public:
     uint8_t data[8];
 };
