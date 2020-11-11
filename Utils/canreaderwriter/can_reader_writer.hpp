@@ -3,6 +3,7 @@
 
 #include "socketcan_cpp.h"
 #include <iostream>
+#include <future>
 #include <mutex>
 
 struct FrameData{
@@ -24,6 +25,7 @@ public:
   void SendFrame(int id, uint8_t* data);
   void read();
   FrameData getData();
+  void SendShutdownCommand(int id, uint8_t* data);
   void updateReadData();
   void updateWrite(FrameData);
 private:

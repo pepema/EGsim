@@ -1,10 +1,23 @@
+#ifndef INPUT_HANDLER_HPP
+#define INPUT_HANDLER_HPP
 #include <curses.h>
+#include <condition_variable>
+#include "can_encoder.hpp"
 
 class InputHandler{
 public:
   InputHandler();
   ~InputHandler();
   int GetPressedKey();
+  int GetPressedKey(std::string file);
+  void Run(uint8_t*, bool&);
+  std::condition_variable cv;
+  bool input_ready;
+  std::mutex m;
 private:
-  int ch;
+  CanEncoder encoder;
+  int ch, key_pressed, count=0;
+  
 };
+
+#endif

@@ -40,19 +40,15 @@ void CanReaderWriter::read()
 
 FrameData CanReaderWriter::getData()
 {
-    /*
-    FrameData frameDataToPass;
-    if(cf_to_read.id == 1)
-    {
-        for (size_t i = 0; i < 8; i++)
-        {
-            frameDataToPass.data[i] = cf_to_read.data[i];    //Should we do this tcopy by ref?
-        }
-    }
-    return frameDataToPass;
-    */
   std::lock_guard<std::mutex> lk_grd(read_data_buffer.mtx);
   return read_data_buffer.frame_data;
+}
+
+void CanReaderWriter::SendShutdownCommand(int id, uint8_t* data){
+  for(int i =0;i<4;i++){
+    std::this_thread::sleep_for(std::chrono::milliseconds(10));
+    this->SendFrame(id,data);
+  }
 }
 
 void CanReaderWriter::updateReadData()
