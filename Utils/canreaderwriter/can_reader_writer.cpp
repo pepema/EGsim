@@ -20,10 +20,6 @@ CanReaderWriter::CanReaderWriter(){
 void CanReaderWriter::SendFrame(int id, const uint8_t* data){
   this->cf_to_write.id = id;
 
-  //for(int i =0;i<8;i++){
-  //  this->cf_to_write.data[i]=data[i];
-  //}
-
   std::memcpy(cf_to_write.data,data, 8*sizeof(uint8_t));
 
   auto write_sc_status = this->socket_can.write(this->cf_to_write);
@@ -33,15 +29,9 @@ void CanReaderWriter::SendFrame(int id, const uint8_t* data){
 void CanReaderWriter::read()
 {
     if (socket_can.read(cf_to_read) == scpp::STATUS_OK) 
-    {
-        //Notify all subscribers
-        //Update Frame data
-        
+    {        
     }
-    /*else 
-    {
-       // for (size_t i = 0; i < 9999; i++); //STUPID SLEEP?
-    }*/
+
 }
 
 FrameData CanReaderWriter::getData()
@@ -64,7 +54,5 @@ void CanReaderWriter::updateReadData()
         std::lock_guard<std::mutex> lk_grd(read_data_buffer.mtx);
 
         std::memcpy(read_data_buffer.frame_data.data, cf_to_read.data, sizeof(read_data_buffer.frame_data.data));
-
-        //8*(sizeof(uint8_t))
     }
 }
