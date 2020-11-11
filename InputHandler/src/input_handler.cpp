@@ -5,7 +5,7 @@ InputHandler::InputHandler(){
   cbreak();
   noecho();
   keypad(stdscr, TRUE);
-  nodelay(stdscr, TRUE);
+  nodelay(stdscr, FALSE);
 }
 
 int InputHandler::GetPressedKey(){
