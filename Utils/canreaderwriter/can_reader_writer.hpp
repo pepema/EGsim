@@ -22,10 +22,10 @@ struct DataBuffer{
 class CanReaderWriter{
 public:
   CanReaderWriter();
-  void SendFrame(int id, uint8_t* data);
+  void SendFrame(int id,const  uint8_t* data);
   void read();
   FrameData getData();
-  void SendShutdownCommand(int id, uint8_t* data);
+  void SendShutdownCommand(int id,const  uint8_t* data);
   void updateReadData();
   void updateWrite(FrameData);
 private:

@@ -17,12 +17,15 @@ CanReaderWriter::CanReaderWriter(){
   }
 }
 
-void CanReaderWriter::SendFrame(int id, uint8_t* data){
+void CanReaderWriter::SendFrame(int id, const uint8_t* data){
   this->cf_to_write.id = id;
 
   for(int i =0;i<8;i++){
     this->cf_to_write.data[i]=data[i];
   }
+
+  //std::memcpy(cf_to_write.data,data, 8*sizeof(uint8_t));
+
   auto write_sc_status = this->socket_can.write(this->cf_to_write);
 
 }
@@ -47,7 +50,7 @@ FrameData CanReaderWriter::getData()
   return read_data_buffer.frame_data;
 }
 
-void CanReaderWriter::SendShutdownCommand(int id, uint8_t* data){
+void CanReaderWriter::SendShutdownCommand(int id,const uint8_t* data){
   for(int i =0;i<4;i++){
     std::this_thread::sleep_for(std::chrono::milliseconds(10));
     this->SendFrame(id,data);
