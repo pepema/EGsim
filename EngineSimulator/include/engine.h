@@ -17,7 +17,7 @@ private:
     void updateARPM_D_R(const uint8_t& brake);
 public:
     void setEngineStatus(const bool& ES);
-    void updateTRPM(const uint8_t& accel, const uint8_t& brake);
+    void updateTRPM(const uint8_t& accel);
     void updateARPM(const uint8_t& brake, const Gear& gear);
 
     bool getEngineStatus();

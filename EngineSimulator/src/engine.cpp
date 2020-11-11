@@ -1,9 +1,9 @@
 #include "engine.h"
 
-void Engine::updateTRPM(const uint8_t& acceleration, const uint8_t& brake){
+void Engine::updateTRPM(const uint8_t& acceleration){
     if(this->engine_STC)
-        if (acceleration >= brake)
-            this->TRPM=idle_rpm+(10000-idle_rpm)*(acceleration-brake)/100;
+        if (acceleration > 0)
+            this->TRPM=idle_rpm+(10000-idle_rpm)*(acceleration)/100;
         else
             this->TRPM=idle_rpm;
     else
@@ -36,8 +36,14 @@ void Engine::updateARPM_D_R(const uint8_t& brake){
         else if (vroom < 0) this->ARPM-=standard_rpm_reduction;
         }
     else if (brake > 0){
-        if (vroom > 0) this->ARPM+=vroom;
-        else if (vroom < 0) this->ARPM-=standard_rpm_reduction + standard_rpm_reduction*(1+brake/30);
+        double acc = (this->TRPM-idle_rpm)*100/9300;
+        double brake_TRPM = TRPM-(9300*brake/100);
+        double brake_vroom = (brake_TRPM-this->ARPM)/300;
+        if (brake < acc) this->ARPM+=brake_vroom;
+        else if (brake >= acc) {
+            if(this->ARPM < idle_rpm) this->ARPM = idle_rpm;
+            else this->ARPM-=standard_rpm_reduction + standard_rpm_reduction*(1+brake/30);
+        }
     }
 
 }

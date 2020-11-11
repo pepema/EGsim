@@ -50,7 +50,7 @@ void processWrite(CanReaderWriter& can_r_w, bool app_start)
         }
         my_engine.setEngineStatus(my_signal_decoder.getEngineStatus());
         my_gearbox.updateGear(my_signal_decoder.getGearinput(), my_signal_decoder.getBrakeinput());
-        my_engine.updateTRPM(my_signal_decoder.getAcceleration(), my_signal_decoder.getBrakeinput());
+        my_engine.updateTRPM(my_signal_decoder.getAcceleration());
         my_engine.updateARPM(my_signal_decoder.getBrakeinput(),my_gearbox.getGear());
         my_gearbox.updateSpeed(my_engine.getARPM());
         
