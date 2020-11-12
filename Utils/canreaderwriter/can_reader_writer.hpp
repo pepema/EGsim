@@ -29,6 +29,7 @@ public:
   void SendShutdownCommand(int id,const  uint8_t* data);
   void updateReadData();
   //void updateWrite(FrameData);
+  uint8_t* getWriteData();
 private:
   scpp::CanFrame cf_to_write;
   scpp::SocketCan socket_can;

@@ -15,7 +15,7 @@ CanEncoder::CanEncoder(){
 
 bool CanEncoder::ValidKey(int a, uint8_t* data){
   bool returnvalue = false;
-  if(valid_keys.contains(a)){
+  if(valid_keys.count(a)!=0){
     auto search = valid_keys.find(a);
     if(search->first == 'A' || search->first == 'B')
       if(data[search->second.first]  >= 100 )
