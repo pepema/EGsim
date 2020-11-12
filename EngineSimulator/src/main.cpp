@@ -19,6 +19,51 @@ void readUpdate(CanReaderWriter& can_r_w, std::promise<bool> * app_start)
     }
 }
 
+bool shift_up_in_progress, shift_down_in_progress;
+
+void CalculateGear(Engine& e, Gearbox& g, SignalDecoder& s){
+    if(g.getGearMode() == GearMode::D){
+        if(g.getGear() == 0 && s.getAcceleration() > 0){
+            g.gearShiftUp();
+        }
+        else if(g.getGear()<6 && e.getARPM()>=4500){
+            shift_up_in_progress = true;
+        }
+        else if(g.getGear()>1 && e.getARPM()<=1500){
+            shift_down_in_progress = true;
+        }
+        else if(g.getGear() == 1){
+        }
+
+
+        if(shift_up_in_progress){
+            e.updateTRPM(120);
+            //std::cout << "setting TRPM0" << std::endl;
+            if(e.getARPM()*g.gear_ratio[g.getGear()+1] <= g.getSpeed()){
+                //std::cout << "Shifting gears" << std::endl;
+                g.gearShiftUp();
+                shift_up_in_progress = false;
+            }
+        }
+        else if(shift_down_in_progress){
+            e.updateTRPM(110);
+            if(e.getARPM()*g.gear_ratio[g.getGear()-1] >= g.getSpeed()){
+                g.gearShiftDown();
+                shift_down_in_progress = false;
+            }
+        }
+        else{
+            e.updateTRPM(s.getAcceleration());
+            g.updateSpeed(e.getARPM());
+        }
+    }
+    else{
+        e.updateTRPM(s.getAcceleration());
+    }
+}
+
+
+
 void processWrite(CanReaderWriter& can_r_w, bool app_start)
 {
     SignalDecoder my_signal_decoder;
@@ -41,18 +86,19 @@ void processWrite(CanReaderWriter& can_r_w, bool app_start)
             app_start = false;
         }
 
+        CalculateGear(my_engine,my_gearbox,my_signal_decoder);
+
         //update Signals : Speed, RPM, Engine Status, Gear
         my_engine.setEngineStatus(my_signal_decoder.getEngineStatus());
         my_gearbox.updateGear(my_signal_decoder.getGearinput(), my_signal_decoder.getBrakeinput());
-        my_engine.updateTRPM(my_signal_decoder.getAcceleration());
-        my_engine.updateARPM(my_signal_decoder.getBrakeinput(),my_gearbox.getGear());
-        my_gearbox.updateSpeed(my_engine.getARPM());
+        my_engine.updateARPM(my_signal_decoder.getBrakeinput(),my_gearbox.getGearMode());
+        //if(!shift_up_in_progress) my_gearbox.updateSpeed(my_engine.getARPM());
         
         //Encode output values : Speed, RPM, Engine Status, Gear to CAN
         my_encoder.encodeEngineStatus(my_engine.getEngineStatus());
         my_encoder.encodeRPM(my_engine.getARPM());
         my_encoder.encodeSpeed(my_gearbox.getSpeed());
-        my_encoder.encodeGear(my_gearbox.getGear());
+        my_encoder.encodeGear(my_gearbox.getGearMode());
 
         output_data = my_encoder.get_frame_data_op();
 
@@ -66,9 +112,10 @@ void processWrite(CanReaderWriter& can_r_w, bool app_start)
         std::cout << " Speed: "               << std::setfill(' ') << std::setw(3) << static_cast<int>(output_data.data[0])
                   << " RPM: "                 << std::setfill(' ') << std::setw(5) << static_cast<int>(print_rpm)
                   << " EngineStatus: "        << static_cast<int>(output_data.data[3])
-                  << " Gear: "                << std::setfill(' ') << std::setw(1) << output_data.data[4]
+                  << " GearMode: "            << std::setfill(' ') << std::setw(1) << output_data.data[4]
                   << " Brake: "               << std::setfill(' ') << std::setw(3) << static_cast<int>(my_signal_decoder.getBrakeinput()) << "%"
                   << " Acceleration: "        << std::setfill(' ') << std::setw(3) << static_cast<int>(my_signal_decoder.getAcceleration()) << "%"
+                  << " Gear: "                << std::setfill(' ') << std::setw(1) << static_cast<int>(my_gearbox.getGear())
                   << '\r' << std::flush;
     }
 }

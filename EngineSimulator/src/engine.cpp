@@ -3,7 +3,9 @@
 void Engine::updateTRPM(const uint8_t& acceleration){
     if(this->engine_STC)
         if (acceleration > 0)
-            this->TRPM=idle_rpm+(10000-idle_rpm)*(acceleration)/100;
+            if(acceleration == 110) this->TRPM = 0xFFFF;
+            else if(acceleration == 120) this->TRPM = 0xFFFE;
+            else this->TRPM=idle_rpm+(10000-idle_rpm)*(acceleration)/100;
         else
             this->TRPM=idle_rpm;
     else
@@ -11,8 +13,8 @@ void Engine::updateTRPM(const uint8_t& acceleration){
     }
     
 
-void Engine::updateARPM(const uint8_t& brake, const Gear& gear){
-    if(gear==Gear::N) this->updateARPM_N();
+void Engine::updateARPM(const uint8_t& brake, const GearMode& gear){
+    if(gear==GearMode::N) this->updateARPM_N();
     else this->updateARPM_D_R(brake);       
 }
 
@@ -31,18 +33,26 @@ void Engine::updateARPM_N(){
 
 void Engine::updateARPM_D_R(const uint8_t& brake){
     double vroom=static_cast<double>(this->TRPM-this->ARPM)/300;
-    if (brake == 0){
-        if (vroom > 0) this->ARPM+=vroom;
-        else if (vroom < 0) this->ARPM-=standard_rpm_reduction;
-        }
-    else if (brake > 0){
-        double acc = (this->TRPM-idle_rpm)*100/9300;
-        double brake_TRPM = TRPM-(9300*brake/100);
-        double brake_vroom = (brake_TRPM-this->ARPM)/300;
-        if (brake < acc) this->ARPM+=brake_vroom;
-        else if (brake >= acc) {
-            if(this->ARPM < idle_rpm) this->ARPM = idle_rpm;
-            else this->ARPM-=standard_rpm_reduction + standard_rpm_reduction*(1+brake/30);
+    if(this->TRPM == 0xFFFF){
+        this->ARPM += start_stop_rpm_step*5;
+    }
+    else if(this->TRPM == 0xFFFE){
+        this->ARPM -= start_stop_rpm_step*5;
+    }
+    else{
+        if (brake == 0){
+            if (vroom > 0) this->ARPM+=vroom;
+            else if (vroom < 0) this->ARPM-=standard_rpm_reduction;
+            }
+        else if (brake > 0){
+            double acc = (this->TRPM-idle_rpm)*100/9300;
+            double brake_TRPM = TRPM-(9300*brake/100);
+            double brake_vroom = (brake_TRPM-this->ARPM)/300;
+            if (brake < acc) this->ARPM+=brake_vroom;
+            else if (brake >= acc) {
+                if(this->ARPM < idle_rpm) this->ARPM = idle_rpm;
+                else this->ARPM-=standard_rpm_reduction + standard_rpm_reduction*(1+brake/30);
+            }
         }
     }
 
