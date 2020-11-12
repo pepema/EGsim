@@ -7,6 +7,7 @@
 class InputHandler{
 public:
   InputHandler();
+  InputHandler(std::string s):sequence(s){};
   ~InputHandler();
   int GetPressedKey();
   int GetPressedKey(std::string file);
@@ -17,7 +18,7 @@ public:
 private:
   CanEncoder encoder;
   int ch, key_pressed, count=0;
-  
+  std::string sequence;
 };
 
 #endif

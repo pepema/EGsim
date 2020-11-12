@@ -56,3 +56,8 @@ void CanReaderWriter::updateReadData()
         std::memcpy(read_data_buffer.frame_data.data, cf_to_read.data, sizeof(read_data_buffer.frame_data.data));
     }
 }
+
+
+uint8_t* CanReaderWriter::getWriteData(){
+  return write_data.data;
+}
