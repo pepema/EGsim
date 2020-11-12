@@ -6,14 +6,15 @@
 #include <future>
 #include <mutex>
 
-struct FrameData{
+/*struct FrameData{
     public:
     uint8_t data[8];
-};
+};*/
 
 struct DataBuffer{
   public:
-  FrameData frame_data;
+  //FrameData frame_data;
+  uint8_t frame_data[8];
   std::mutex mtx;
 };
 
@@ -23,16 +24,18 @@ public:
   CanReaderWriter();
   void SendFrame(int id,const  uint8_t* data);
   void read();
-  FrameData getData();
+  //FrameData getData();
+  uint8_t* getData();
   void SendShutdownCommand(int id,const  uint8_t* data);
   void updateReadData();
-  void updateWrite(FrameData);
+  //void updateWrite(FrameData);
 private:
   scpp::CanFrame cf_to_write;
   scpp::SocketCan socket_can;
   scpp::CanFrame cf_to_read;
   DataBuffer read_data_buffer;
-  FrameData write_data;
+  //FrameData write_data;
+  //uint8_t read_data_buffer[8];
 };
 
 #endif //CANREADERWRITER_HPP
