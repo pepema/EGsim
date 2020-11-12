@@ -13,7 +13,7 @@ CanReaderWriter::CanReaderWriter(){
   for(int i =0;i<length;i++){
     cf_to_write.data[i]=0;
     cf_to_read.data[i]=0;
-    read_data_buffer.frame_data[i]=0;
+    read_data_buffer.frame_data.data[i]=0;
   }
 }
 
@@ -31,11 +31,16 @@ void CanReaderWriter::read()
     if (socket_can.read(cf_to_read) == scpp::STATUS_OK) 
     {        
     }
+    else
+    {
+      /* code */
+    }
+    
 
 }
 
-//FrameData CanReaderWriter::getData()
-uint8_t * CanReaderWriter::getData()
+FrameData CanReaderWriter::getData()
+//uint8_t * CanReaderWriter::getData()
 {
   std::lock_guard<std::mutex> lk_grd(read_data_buffer.mtx);
   return read_data_buffer.frame_data;
@@ -54,7 +59,7 @@ void CanReaderWriter::updateReadData()
     {
         std::lock_guard<std::mutex> lk_grd(read_data_buffer.mtx);
 
-        std::memcpy(read_data_buffer.frame_data, cf_to_read.data, sizeof(read_data_buffer.frame_data));
+        std::memcpy(read_data_buffer.frame_data.data, cf_to_read.data, sizeof(read_data_buffer.frame_data));
     }
 }
 

@@ -23,12 +23,12 @@ void processWrite(CanReaderWriter& can_r_w, bool app_start)
 {
     SignalDecoder my_signal_decoder;
     CANEncoder my_encoder;
-    //FrameData output_data;
-    uint8_t* output_data;
+    FrameData output_data;
+    //uint8_t* output_data;
     Engine my_engine;
     Gearbox my_gearbox;
-    //FrameData test;
-    uint8_t test[8];
+    FrameData test;
+    //uint8_t test[8];
 
     while(app_start)
     {
@@ -60,13 +60,13 @@ void processWrite(CanReaderWriter& can_r_w, bool app_start)
         output_data = my_encoder.get_frame_data_op();
 
         //write CAN message
-        //can_r_w.SendFrame(2,output_data.data);
-        can_r_w.SendFrame(2,output_data);
+        can_r_w.SendFrame(2,output_data.data);
+        //can_r_w.SendFrame(2,output_data);
         
         //Showing the values from output CAN Frame
         std::this_thread::sleep_for(std::chrono::milliseconds(10));
 
-        /*
+        
         uint16_t print_rpm = output_data.data[2] << 8 | output_data.data[1];
         std::cout << " Speed: "               << std::setfill(' ') << std::setw(3) << static_cast<int>(output_data.data[0])
                   << " RPM: "                 << std::setfill(' ') << std::setw(5) << static_cast<int>(print_rpm)
@@ -75,7 +75,7 @@ void processWrite(CanReaderWriter& can_r_w, bool app_start)
                   << " Brake: "               << std::setfill(' ') << std::setw(3) << static_cast<int>(my_signal_decoder.getBrakeinput()) << "%"
                   << " Acceleration: "        << std::setfill(' ') << std::setw(3) << static_cast<int>(my_signal_decoder.getAcceleration()) << "%"
                   << '\r' << std::flush;
-                  */
+                  /*
         uint16_t print_rpm = output_data[2] << 8 | output_data[1];
         std::cout << " Speed: "               << std::setfill(' ') << std::setw(3) << static_cast<int>(output_data[0])
                   << " RPM: "                 << std::setfill(' ') << std::setw(5) << static_cast<int>(print_rpm)
@@ -83,7 +83,7 @@ void processWrite(CanReaderWriter& can_r_w, bool app_start)
                   << " Gear: "                << std::setfill(' ') << std::setw(1) << output_data[4]
                   << " Brake: "               << std::setfill(' ') << std::setw(3) << static_cast<int>(my_signal_decoder.getBrakeinput()) << "%"
                   << " Acceleration: "        << std::setfill(' ') << std::setw(3) << static_cast<int>(my_signal_decoder.getAcceleration()) << "%"
-                  << '\r' << std::flush;
+                  << '\r' << std::flush;*/
     }
 }
 
