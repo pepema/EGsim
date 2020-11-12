@@ -5,8 +5,9 @@
 #include "can_encoder.hpp"
 
 int main(){
-  CanReaderWriter reader_writer;
   InputHandler handler;
+  //InputHandler handler("4S2AA5aa2s");
+  CanReaderWriter reader_writer;
   uint8_t* data = reader_writer.getWriteData();
   bool exit = 0;
   std::thread t(&InputHandler::Run,&handler,data,std::ref(exit));
