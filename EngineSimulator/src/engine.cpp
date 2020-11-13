@@ -34,10 +34,10 @@ void Engine::updateARPM_N(){
 void Engine::updateARPM_D_R(const uint8_t& brake){
     double vroom=static_cast<double>(this->TRPM-this->ARPM)/300;
     if(this->TRPM == 0xFFFF){
-        this->ARPM += start_stop_rpm_step*5;
+        this->ARPM += start_stop_rpm_step*4;
     }
     else if(this->TRPM == 0xFFFE){
-        this->ARPM -= start_stop_rpm_step*5;
+        this->ARPM -= start_stop_rpm_step*4;
     }
     else{
         if (brake == 0){
