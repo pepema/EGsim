@@ -1,7 +1,7 @@
 #include "control_module.h"
 
-
-ControlModule::ControlModule(){
+ControlModule::ControlModule(CanReaderWriter* can_reader_writer){
+    this->can_r_w=can_reader_writer;
     shift_down=false;
     shift_up=false;
 }
@@ -15,6 +15,15 @@ void ControlModule::PowertrainControl(){
         }
         engine.updateARPM(signal_decoder.getBrakeinput(),gearbox.getGearMode());
 }
+
+void ControlModule::SendCANFrame(){
+    can_r_w->SendFrame(2,output_data.data);
+}
+
+void ControlModule::EvaluateEngineStatus(){
+    engine.setEngineStatus(signal_decoder.getEngineStatus());
+}
+
 
 void ControlModule::SetGearMode(){
     gearbox.updateGear(signal_decoder.getGearinput(), signal_decoder.getBrakeinput());
@@ -68,17 +77,17 @@ void ControlModule::Encode(){
     encoder.encodeGear(gearbox.getGearMode());
 }
 
-void ControlModule::Run(CanReaderWriter& can_r_w)
+void ControlModule::Run()
 {
     while(1)
     {
         //decode input CAN message
-        signal_decoder.setIpFrame(can_r_w.getData());
+        DecodeInputCan();
         //Crash if Hazard
         if(EvaluateHazard()) break;
         
         //update Signals : Speed, RPM, Engine Status, Gear
-        engine.setEngineStatus(signal_decoder.getEngineStatus());
+        EvaluateEngineStatus();
         SetGearMode();
         CalculateGear();
         PowertrainControl();
@@ -87,13 +96,13 @@ void ControlModule::Run(CanReaderWriter& can_r_w)
         Encode();
         SetOutputFrame();
 
-        //write CAN message
-        can_r_w.SendFrame(2,output_data.data);
+        //Send CAN message
+        SendCANFrame();
         
         //Showing the values from output CAN Frame
         std::this_thread::sleep_for(std::chrono::milliseconds(10));
 
-        DummyDim();
+        DummyDim(); // Display current internal states
     }   
 }
 

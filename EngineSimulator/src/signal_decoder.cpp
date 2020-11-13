@@ -24,14 +24,7 @@ void SignalDecoder::setIpFrame(const FrameData & frame_data_val)
 
 bool SignalDecoder::getEngineStatus()
 {
-    if(frame_data_ip.data[7] == 0)
-    {
-        return false;
-    }
-    else
-    {
-        return true;
-    }
+    return (frame_data_ip.data[7] == 0)?false: true;
 }
 uint8_t SignalDecoder::getGearinput(){
     return frame_data_ip.data[5];

@@ -12,17 +12,20 @@
 
 class ControlModule{
     public:
-    void Run(CanReaderWriter&);
+    void Run();
     void PowertrainControl();
+    void EvaluateEngineStatus();
     void CalculateGear();
     void ShiftGear();
     bool EvaluateHazard();
     void Encode();
     void SetOutputFrame();
     void SetGearMode();
-    void SendFrame();
+    void SendCANFrame();
     void DummyDim();
-    ControlModule();
+    inline void DecodeInputCan(){signal_decoder.setIpFrame(can_r_w->getData());}
+
+    ControlModule(CanReaderWriter*);
     
     private:
     bool shift_up, shift_down;
@@ -31,5 +34,6 @@ class ControlModule{
     SignalDecoder signal_decoder;
     CANEncoder encoder;
     FrameData output_data;
+    CanReaderWriter* can_r_w;
 };
 #endif // CONTROL_MODULE_H
