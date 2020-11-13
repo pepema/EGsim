@@ -1,6 +1,5 @@
 #include "control_module.h"
 
-
 void readUpdate(CanReaderWriter& can_r_w, std::promise<bool> * app_start)
 {
     std::future<bool> start_cond_f = app_start->get_future();

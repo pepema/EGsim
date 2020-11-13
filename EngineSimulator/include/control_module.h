@@ -1,3 +1,5 @@
+#ifndef CONTROL_MODULE_H
+#define CONTROL_MODULE_H
 #include <thread>
 #include <iomanip>
 #include <future>
@@ -29,7 +31,5 @@ class ControlModule{
     SignalDecoder signal_decoder;
     CANEncoder encoder;
     FrameData output_data;
-
-
-
 };
+#endif // CONTROL_MODULE_H
