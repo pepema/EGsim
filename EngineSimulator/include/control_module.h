@@ -10,10 +10,14 @@
 
 class ControlModule{
     public:
-    void Run(CanReaderWriter&, bool);
+    void Run(CanReaderWriter&);
     void CalculateGear();
-    void EvaluateHazard(bool&);
+    bool EvaluateHazard();
     void Encode();
+    void SetOutputFrame();
+    void SetGearMode();
+    void SendFrame();
+    void DummyDim();
     ControlModule();
     
     private:

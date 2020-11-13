@@ -6,12 +6,30 @@ ControlModule::ControlModule(){
     shift_up_in_progress=false;
 }
 
-void ControlModule::EvaluateHazard(bool& app_start){       
+void ControlModule::SetGearMode(){
+    gearbox.updateGear(signal_decoder.getGearinput(), signal_decoder.getBrakeinput());
+}
+
+void ControlModule::SetOutputFrame(){
+    output_data = encoder.get_frame_data_op();
+}
+
+void ControlModule::DummyDim(){
+    uint16_t print_rpm = output_data.data[2] << 8 | output_data.data[1];
+    std::cout << " Speed: "               << std::setfill(' ') << std::setw(3) << static_cast<int>(output_data.data[0])
+                << " Gear: "                << std::setfill(' ') << std::setw(1) << static_cast<int>(gearbox.getGear())
+                << " RPM: "                 << std::setfill(' ') << std::setw(5) << static_cast<int>(print_rpm)
+                << " EngineStatus: "        << static_cast<int>(output_data.data[3])
+                << " GearMode: "            << std::setfill(' ') << std::setw(1) << output_data.data[4]
+                << " Brake: "               << std::setfill(' ') << std::setw(3) << static_cast<int>(signal_decoder.getBrakeinput()) << "%"
+                << " Acceleration: "        << std::setfill(' ') << std::setw(3) << static_cast<int>(signal_decoder.getAcceleration()) << "%"   
+                << '\r' << std::flush;
+}
+
+bool ControlModule::EvaluateHazard(){       
     engine.setHazard(signal_decoder.getHazard());
-    if(engine.getHazard() == true)
-    {
-        app_start = false;
-    }     
+    if(engine.getHazard() == true) return true;
+    else return false;
 }
 
 void ControlModule::Encode(){
@@ -21,25 +39,24 @@ void ControlModule::Encode(){
     encoder.encodeGear(gearbox.getGearMode());
 }
 
-void ControlModule::Run(CanReaderWriter& can_r_w, bool app_start)
+void ControlModule::Run(CanReaderWriter& can_r_w)
 {
-    while(app_start)
+    while(1)
     {
         //decode input CAN message
         signal_decoder.setIpFrame(can_r_w.getData());
         //Crash if Hazard
-        EvaluateHazard(app_start);
-        CalculateGear();
+        if(EvaluateHazard()) break;
+        
         //update Signals : Speed, RPM, Engine Status, Gear
         engine.setEngineStatus(signal_decoder.getEngineStatus());
-        gearbox.updateGear(signal_decoder.getGearinput(), signal_decoder.getBrakeinput());
+        SetGearMode();
+        CalculateGear();
         engine.updateARPM(signal_decoder.getBrakeinput(),gearbox.getGearMode());
-        //if(!shift_up_in_progress) gearbox.updateSpeed(engine.getARPM());
-        
+
         //Encode output values : Speed, RPM, Engine Status, Gear to CAN
         Encode();
-
-        output_data = encoder.get_frame_data_op();
+        SetOutputFrame();
 
         //write CAN message
         can_r_w.SendFrame(2,output_data.data);
@@ -47,15 +64,7 @@ void ControlModule::Run(CanReaderWriter& can_r_w, bool app_start)
         //Showing the values from output CAN Frame
         std::this_thread::sleep_for(std::chrono::milliseconds(10));
 
-        uint16_t print_rpm = output_data.data[2] << 8 | output_data.data[1];
-        std::cout << " Speed: "               << std::setfill(' ') << std::setw(3) << static_cast<int>(output_data.data[0])
-                  << " RPM: "                 << std::setfill(' ') << std::setw(5) << static_cast<int>(print_rpm)
-                  << " EngineStatus: "        << static_cast<int>(output_data.data[3])
-                  << " GearMode: "            << std::setfill(' ') << std::setw(1) << output_data.data[4]
-                  << " Brake: "               << std::setfill(' ') << std::setw(3) << static_cast<int>(signal_decoder.getBrakeinput()) << "%"
-                  << " Acceleration: "        << std::setfill(' ') << std::setw(3) << static_cast<int>(signal_decoder.getAcceleration()) << "%"
-                  << " Gear: "                << std::setfill(' ') << std::setw(1) << static_cast<int>(gearbox.getGear())
-                  << '\r' << std::flush;
+        DummyDim();
     }
 }
 
