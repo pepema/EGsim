@@ -14,6 +14,7 @@ CanReaderWriter::CanReaderWriter(){
     cf_to_write.data[i]=0;
     cf_to_read.data[i]=0;
     read_data_buffer.frame_data.data[i]=0;
+    write_data.data[i] = 0;
   }
 }
 
