@@ -2,12 +2,41 @@
 
 
 ControlModule::ControlModule(){
-    shift_down_in_progress=false;
-    shift_up_in_progress=false;
+    shift_down=false;
+    shift_up=false;
+}
+
+void ControlModule::PowertrainControl(){
+        if(shift_up || shift_down) 
+            ShiftGear();
+        else {
+            engine.updateTRPM(signal_decoder.getAcceleration());
+            gearbox.updateSpeed(engine.getARPM());
+        }
+        engine.updateARPM(signal_decoder.getBrakeinput(),gearbox.getGearMode());
 }
 
 void ControlModule::SetGearMode(){
     gearbox.updateGear(signal_decoder.getGearinput(), signal_decoder.getBrakeinput());
+}
+
+void ControlModule::ShiftGear(){
+        if(shift_up){
+            engine.updateTRPM(120);
+            //std::cout << "setting TRPM0" << std::endl;
+            if(engine.getARPM()*gearbox.gear_ratio[gearbox.getGear()+1] <= gearbox.getSpeed()){
+                //std::cout << "Shifting gears" << std::endl;
+                gearbox.gearShiftUp();
+                shift_up = false;
+            }
+        }
+        else if(shift_down){
+            engine.updateTRPM(110);
+            if(engine.getARPM()*gearbox.gear_ratio[gearbox.getGear()-1] >= gearbox.getSpeed()){
+                gearbox.gearShiftDown();
+                shift_down = false;
+            }
+        }
 }
 
 void ControlModule::SetOutputFrame(){
@@ -52,8 +81,8 @@ void ControlModule::Run(CanReaderWriter& can_r_w)
         engine.setEngineStatus(signal_decoder.getEngineStatus());
         SetGearMode();
         CalculateGear();
-        engine.updateARPM(signal_decoder.getBrakeinput(),gearbox.getGearMode());
-
+        PowertrainControl();
+     
         //Encode output values : Speed, RPM, Engine Status, Gear to CAN
         Encode();
         SetOutputFrame();
@@ -65,7 +94,7 @@ void ControlModule::Run(CanReaderWriter& can_r_w)
         std::this_thread::sleep_for(std::chrono::milliseconds(10));
 
         DummyDim();
-    }
+    }   
 }
 
 void ControlModule::CalculateGear(){
@@ -74,37 +103,12 @@ void ControlModule::CalculateGear(){
             gearbox.gearShiftUp();
         }
         else if(gearbox.getGear()<6 && engine.getARPM()>=4500){
-            shift_up_in_progress = true;
+            shift_up= true;
         }
         else if(gearbox.getGear()>1 && engine.getARPM()<=1500){
-            shift_down_in_progress = true;
+            shift_down = true;
         }
         else if(gearbox.getGear() == 1){
         }
-
-
-        if(shift_up_in_progress){
-            engine.updateTRPM(120);
-            //std::cout << "setting TRPM0" << std::endl;
-            if(engine.getARPM()*gearbox.gear_ratio[gearbox.getGear()+1] <= gearbox.getSpeed()){
-                //std::cout << "Shifting gears" << std::endl;
-                gearbox.gearShiftUp();
-                shift_up_in_progress = false;
-            }
-        }
-        else if(shift_down_in_progress){
-            engine.updateTRPM(110);
-            if(engine.getARPM()*gearbox.gear_ratio[gearbox.getGear()-1] >= gearbox.getSpeed()){
-                gearbox.gearShiftDown();
-                shift_down_in_progress = false;
-            }
-        }
-        else{
-            engine.updateTRPM(signal_decoder.getAcceleration());
-            gearbox.updateSpeed(engine.getARPM());
-        }
-    }
-    else{
-        engine.updateTRPM(signal_decoder.getAcceleration());
     }
 }

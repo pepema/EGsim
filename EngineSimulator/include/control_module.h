@@ -11,7 +11,9 @@
 class ControlModule{
     public:
     void Run(CanReaderWriter&);
+    void PowertrainControl();
     void CalculateGear();
+    void ShiftGear();
     bool EvaluateHazard();
     void Encode();
     void SetOutputFrame();
@@ -21,7 +23,7 @@ class ControlModule{
     ControlModule();
     
     private:
-    bool shift_up_in_progress, shift_down_in_progress;
+    bool shift_up, shift_down;
     Engine engine;
     Gearbox gearbox;
     SignalDecoder signal_decoder;
