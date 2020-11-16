@@ -6,15 +6,8 @@ Gearbox::Gearbox(){
     speed=0;
  }
 
-void Gearbox::updateGear(const uint8_t& gearin, const uint8_t& brake){
-    
-    if(speed==0 && brake>0)
-        if(gearin==1)
-            gear_mode=GearMode::D;
-        else if(gearin==2)
-            gear_mode=GearMode::R;
-        else
-            gear_mode=GearMode::N;
+void Gearbox::updateGear(const GearMode& gear_mode){
+    this->gear_mode = gear_mode;
 }
 
 void Gearbox::updateSpeed(const uint16_t& ARPM){
@@ -42,10 +35,14 @@ void Gearbox::updateSpeed(const uint16_t& ARPM){
 
 
 void Gearbox::gearShiftUp(){
+
+    //std::cout << "shifting up" << std::endl;
     gear +=1;
 }
 
 void Gearbox::gearShiftDown(){
+
+    std::cout << "shifting down" << std::endl;
     gear -=1;
 }
 

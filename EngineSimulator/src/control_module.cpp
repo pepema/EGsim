@@ -26,26 +26,38 @@ void ControlModule::EvaluateEngineStatus(){
 
 
 void ControlModule::SetGearMode(){
-    gearbox.updateGear(signal_decoder.getGearinput(), signal_decoder.getBrakeinput());
+    if(gearbox.getSpeed()==0 && signal_decoder.getBrakeinput()>0 && engine.getEngineStatus()==1){
+
+        if(signal_decoder.getGearinput()==1)
+            gearbox.updateGear(GearMode::D);
+        else if(signal_decoder.getGearinput()==2)
+            gearbox.updateGear(GearMode::R);
+        else
+            gearbox.updateGear(GearMode::N);
+        }
+    else if(gearbox.getSpeed()==0 && engine.getEngineStatus()==0){
+        gearbox.updateGear(GearMode::N);
+    }
 }
 
 void ControlModule::ShiftGear(){
-        if(shift_up){
-            engine.updateTRPM(120);
-            //std::cout << "setting TRPM0" << std::endl;
-            if(engine.getARPM()*gearbox.gear_ratio[gearbox.getGear()+1] <= gearbox.getSpeed()){
-                //std::cout << "Shifting gears" << std::endl;
-                gearbox.gearShiftUp();
-                shift_up = false;
-            }
+    if(shift_up){
+        engine.updateTRPM(120);
+        //std::cout << "setting TRPM0" << std::endl;
+        if(engine.getARPM()*gearbox.gear_ratio[gearbox.getGear()+1] <= gearbox.getSpeed()){
+            //std::cout << "Shifting gears" << std::endl;
+            gearbox.gearShiftUp();
+            shift_up = false;
         }
-        else if(shift_down){
-            engine.updateTRPM(110);
-            if(engine.getARPM()*gearbox.gear_ratio[gearbox.getGear()-1] >= gearbox.getSpeed()){
-                gearbox.gearShiftDown();
-                shift_down = false;
-            }
+    }
+    else if(shift_down){
+        engine.updateTRPM(110);
+        if(engine.getARPM()*gearbox.gear_ratio[gearbox.getGear()-1] >= gearbox.getSpeed()){
+            std::cout << "Shifting gears" << std::endl;
+            gearbox.gearShiftDown();
+            shift_down = false;
         }
+    }
 }
 
 void ControlModule::SetOutputFrame(){
@@ -117,7 +129,8 @@ void ControlModule::CalculateGear(){
         else if(gearbox.getGear()>1 && engine.getARPM()<=1500){
             shift_down = true;
         }
-        else if(gearbox.getGear() == 1){
-        }
+    }
+    else if(gearbox.getGear() == 1 && gearbox.getGearMode() == GearMode::N){
+        shift_down = true;
     }
 }

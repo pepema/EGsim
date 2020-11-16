@@ -9,7 +9,10 @@ void Engine::updateTRPM(const uint8_t& acceleration){
         else
             this->TRPM=idle_rpm;
     else
-        this->TRPM=0;
+        if(acceleration == 110) this->TRPM = 0xFFFF;
+        else if(acceleration == 120) this->TRPM = 0xFFFE;
+        else
+            this->TRPM=0;
     }
     
 
