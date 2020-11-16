@@ -6,6 +6,7 @@
 
 namespace CANID {
 const canid_t ENGINE_AND_GEARBOX = 0x2;
+const canid_t SHUTDOWN = 0x1;
 const canid_t ICONZ = 0x213;
 }
 
@@ -17,6 +18,9 @@ void yourStuff::YouHaveJustRecievedACANFrame(const canfd_frame * const _frame) {
         this->InstrumentCluster.setRPM(_frame->data[2] << 8 | _frame->data[1]);
     }
         break;
+    case CANID::SHUTDOWN: {
+        if(_frame->data[0]!=0) exit(0);
+    }
     case CAN::MSG::GAUGES_ID: {
         const struct CAN::MSG::Gauges_t::_inner* s = reinterpret_cast<const struct CAN::MSG::Gauges_t::_inner* >((_frame->data));
 
