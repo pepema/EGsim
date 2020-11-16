@@ -11,6 +11,7 @@ add_executable(EngineSimulator
                src/gearbox.cpp
                src/can_encoder.cpp
                src/signal_decoder.cpp
+               src/control_module.cpp
                ../Utils/socketcan/socketcan_cpp.cpp
                ../Utils/canreaderwriter/can_reader_writer.cpp
                )

@@ -16,7 +16,7 @@ public:
     void encodeEngineStatus(const bool &);
     void encodeRPM(const uint16_t&);
     void encodeSpeed(const uint16_t&);
-    void encodeGear(const Gear&);
+    void encodeGear(const GearMode&);
     FrameData get_frame_data_op();
     //uint8_t * get_frame_data_op();
 };
