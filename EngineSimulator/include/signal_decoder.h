@@ -29,10 +29,12 @@ class SignalDecoder
 {
 private:
     FrameData frame_data_ip;
+    //uint8_t frame_data_ip[8];
 public:
     SignalDecoder();
     ~SignalDecoder();
     void setIpFrame(const FrameData &);
+    //void setIpFrame(const uint8_t *);
     bool getEngineStatus();
     uint8_t getAcceleration();
     uint8_t getGearinput();
