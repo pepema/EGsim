@@ -29,3 +29,8 @@ target_link_libraries(avic
     Qt5::QuickWidgets
     ${QTAPPFW_LIBRARIES}
 )
+
+set_target_properties(avic
+  PROPERTIES
+  RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
+)
