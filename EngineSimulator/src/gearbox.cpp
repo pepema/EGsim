@@ -35,14 +35,10 @@ void Gearbox::updateSpeed(const uint16_t& ARPM){
 
 
 void Gearbox::gearShiftUp(){
-
-    //std::cout << "shifting up" << std::endl;
     gear +=1;
 }
 
 void Gearbox::gearShiftDown(){
-
-    std::cout << "shifting down" << std::endl;
     gear -=1;
 }
 

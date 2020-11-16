@@ -43,9 +43,7 @@ void ControlModule::SetGearMode(){
 void ControlModule::ShiftGear(){
     if(shift_up){
         engine.updateTRPM(120);
-        //std::cout << "setting TRPM0" << std::endl;
         if(engine.getARPM()*gearbox.gear_ratio[gearbox.getGear()+1] <= gearbox.getSpeed()){
-            //std::cout << "Shifting gears" << std::endl;
             gearbox.gearShiftUp();
             shift_up = false;
         }
@@ -53,7 +51,6 @@ void ControlModule::ShiftGear(){
     else if(shift_down){
         engine.updateTRPM(110);
         if(engine.getARPM()*gearbox.gear_ratio[gearbox.getGear()-1] >= gearbox.getSpeed()){
-            std::cout << "Shifting gears" << std::endl;
             gearbox.gearShiftDown();
             shift_down = false;
         }
