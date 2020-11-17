@@ -15,6 +15,8 @@ void yourStuff::YouHaveJustRecievedACANFrame(const canfd_frame * const _frame) {
 
     case CANID::ENGINE_AND_GEARBOX: {
         this->InstrumentCluster.setSpeed(_frame->data[0]);
+        this->InstrumentCluster.setGear(_frame->data[5]);
+        this->InstrumentCluster.setGearPindle(_frame->data[4]);
         this->InstrumentCluster.setRPM(_frame->data[2] << 8 | _frame->data[1]);
     }
         break;

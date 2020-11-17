@@ -47,16 +47,16 @@ void CANEncoder::encodeSpeed(const uint16_t& speed){
         frame_data_op.data[0] = speed;
         //frame_data_op[0] = speed;
  }
-void CANEncoder::encodeGear(const GearMode& gear){
+void CANEncoder::encodeGearMode(const GearMode& gear){
     if (gear == GearMode::D)
-        frame_data_op.data[4] = 'D';
+        frame_data_op.data[4] = 3;
 
     else if (gear == GearMode::R)
 
-        frame_data_op.data[4] = 'R';
+        frame_data_op.data[4] = 2;
         //frame_data_op[4] = 'R';
     else
-        frame_data_op.data[4] = 'N';
+        frame_data_op.data[4] = 0;
         //frame_data_op[4] = 'N';
 }
 
