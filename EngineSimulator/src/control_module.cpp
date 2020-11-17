@@ -128,5 +128,6 @@ void ControlModule::CalculateGear(){
 void ControlModule::DecodeInputCan(DataBuffer& input_frame_buffer)
 {
     //std::cout<<"Inside Decode input can control module" <<std::endl;
-    signal_decoder.setIpFrame(can_r_w->getData(input_frame_buffer));
+    //signal_decoder.setIpFrame(can_r_w->getData(input_frame_buffer));
+    signal_decoder.setIpFrame(input_frame_buffer.frame_data);
 }

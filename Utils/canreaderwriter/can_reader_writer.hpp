@@ -62,14 +62,15 @@ class CanReaderWriter{
 public:
   CanReaderWriter();
   void SendFrame(int id,const FrameData&);
-  void read();
-  FrameData getData(DataBuffer&);
+  
+  //FrameData getData(DataBuffer&);
   //uint8_t* getData();
   //void SendShutdownCommand(int id,const  FrameData & data);
-  void updateReadData(DataBuffer &);
+  void readData(DataBuffer &);
   //void updateWrite(FrameData);
   //uint8_t* getWriteData();
 private:
+  void read();
   scpp::CanFrame cf_to_write;
   scpp::SocketCan socket_can;
   scpp::CanFrame cf_to_read;

@@ -40,12 +40,14 @@ void CanReaderWriter::read()
 
 }
 
+/*
 FrameData CanReaderWriter::getData(DataBuffer &read_data_buffer)
 //uint8_t * CanReaderWriter::getData()
 {
   std::lock_guard<std::mutex> lk_grd(read_data_buffer.mtx);
   return read_data_buffer.frame_data;
 }
+*/
 
 /*
 void CanReaderWriter::SendShutdownCommand(int id,const FrameData & output_data){
@@ -56,7 +58,7 @@ void CanReaderWriter::SendShutdownCommand(int id,const FrameData & output_data){
 }
 */
 
-void CanReaderWriter::updateReadData(DataBuffer &read_data_buffer)
+void CanReaderWriter::readData(DataBuffer &read_data_buffer)
 {
   read();
   if(cf_to_read.id == 001)

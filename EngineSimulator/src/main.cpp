@@ -17,7 +17,7 @@ void readUpdate(DataBuffer &input_frame_buffer, std::promise<bool> * app_start)
         //can_r_w.read();
         //reader.read();
         //std::cout<<"I am before  read"<<std::endl;
-        reader.updateReadData(input_frame_buffer);
+        reader.readData(input_frame_buffer);
         //std::cout<<"I am infinite read"<<std::endl;
     }
 }
