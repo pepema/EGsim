@@ -64,3 +64,24 @@ TEST_F(EngineTest, canCalc){
   engineOn.fuel_calculator=&fuel_calculator;
   engineOn.updateARPM(50,GearMode::N);
 }
+
+TEST(SomeFuelConsumption, AtSpeed50){
+  MockFuelCalculator fuel_calculator;
+  Engine e;
+  EXPECT_CALL(fuel_calculator, CalculateFuelConsumption(true))
+      .Times(::testing::AnyNumber())
+      .WillRepeatedly(Return(-1));
+  
+  e.fuel_calculator=&fuel_calculator;
+  e.setEngineStatus(true);
+  e.updateTRPM(50);
+  int iters = 0;
+  do{
+    e.updateARPM(0,GearMode::D);
+    iters++;
+
+  } while (iters<5000);
+
+  EXPECT_GT(e.getARPM(),500);
+  EXPECT_LT(e.getFuelLevel(),100);
+}
