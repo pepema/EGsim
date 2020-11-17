@@ -70,7 +70,7 @@ public:
   //void updateWrite(FrameData);
   //uint8_t* getWriteData();
 private:
-  void read();
+  //void read();
   scpp::CanFrame cf_to_write;
   scpp::SocketCan socket_can;
   scpp::CanFrame cf_to_read;

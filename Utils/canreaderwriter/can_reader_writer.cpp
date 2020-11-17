@@ -27,6 +27,7 @@ void CanReaderWriter::writeData(uint8_t id, const FrameData & output_data){
 
 }
 
+/*
 void CanReaderWriter::read()
 {
     if (socket_can.read(cf_to_read) == scpp::STATUS_OK) 
@@ -34,11 +35,12 @@ void CanReaderWriter::read()
     }
     else
     {
-      /* code */
+      
     }
     
 
 }
+*/
 
 /*
 FrameData CanReaderWriter::getData(DataBuffer &read_data_buffer)
@@ -60,16 +62,25 @@ void CanReaderWriter::SendShutdownCommand(int id,const FrameData & output_data){
 
 void CanReaderWriter::readData(uint8_t id, DataBuffer &read_data_buffer)
 {
-  read();
+  if (socket_can.read(cf_to_read) == scpp::STATUS_OK);
   if(cf_to_read.id == id)
-    {
-        std::lock_guard<std::mutex> lk_grd(read_data_buffer.mtx);
+  {
+    std::lock_guard<std::mutex> lk_grd(read_data_buffer.mtx);
         //for(auto i = 0; i < 8;i++)
         //{
         //  read_data_buffer_ptr->frame_data.data[i] = cf_to_read.data[i];
         //}
-        std::memcpy(read_data_buffer.frame_data.data, cf_to_read.data, sizeof(read_data_buffer.frame_data));
-    }
+    std::memcpy(read_data_buffer.frame_data.data, cf_to_read.data, sizeof(read_data_buffer.frame_data));
+  }
+  //if(cf_to_read.id == id)
+  //  {
+  //      std::lock_guard<std::mutex> lk_grd(read_data_buffer.mtx);
+        //for(auto i = 0; i < 8;i++)
+        //{
+        //  read_data_buffer_ptr->frame_data.data[i] = cf_to_read.data[i];
+        //}
+  //      std::memcpy(read_data_buffer.frame_data.data, cf_to_read.data, sizeof(read_data_buffer.frame_data));
+  //  }
 }
 
 /*
