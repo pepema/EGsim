@@ -17,7 +17,10 @@ void ControlModule::PowertrainControl(){
 }
 
 void ControlModule::SendCANFrame(){
-    can_r_w->SendFrame(2,output_data.data);
+    //FrameData *output_frame_data;
+    
+    //output_frame_data = reinterpret_cast<FrameData*>(output_data);
+    can_r_w->writeData(2,output_data);
 }
 
 void ControlModule::EvaluateEngineStatus(){
@@ -86,12 +89,12 @@ void ControlModule::Encode(){
     encoder.encodeGear(gearbox.getGearMode());
 }
 
-void ControlModule::Run()
+void ControlModule::Run(DataBuffer& input_frame_buffer)
 {
     while(1)
     {
         //decode input CAN message
-        DecodeInputCan();
+        DecodeInputCan(input_frame_buffer);
         //Crash if Hazard
         if(EvaluateHazard()) break;
         
@@ -130,4 +133,11 @@ void ControlModule::CalculateGear(){
     else if(gearbox.getGear() == 1 && gearbox.getGearMode() == GearMode::N){
         shift_down = true;
     }
+}
+
+void ControlModule::DecodeInputCan(DataBuffer& input_frame_buffer)
+{
+    //std::cout<<"Inside Decode input can control module" <<std::endl;
+    //signal_decoder.setIpFrame(can_r_w->getData(input_frame_buffer));
+    signal_decoder.setIpFrame(input_frame_buffer.frame_data);
 }
