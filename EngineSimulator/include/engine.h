@@ -2,6 +2,7 @@
 #define ENGINE_H
 #include <iostream>
 #include "gearbox.h"
+#include "fuel_calculator.hpp"
 using namespace std;
 
 
@@ -15,16 +16,17 @@ private:
     const int idle_rpm = 700, standard_rpm_reduction = 3, start_stop_rpm_step = 15;
     void updateARPM_N();
     void updateARPM_D_R(const uint8_t& brake);
+    int fuel_level = 100000000;
 public:
     void setEngineStatus(const bool& ES);
     void updateTRPM(const uint8_t& accel);
     void updateARPM(const uint8_t& brake, const GearMode& gear);
-
     bool getEngineStatus();
-
     uint16_t getARPM();
     void setHazard(const bool& hazard);
     bool getHazard();
+    inline int getFuelLevel() {return fuel_level/1000000;}
+    FuelCalculator* fuel_calculator;
 
     Engine();
  

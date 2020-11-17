@@ -1,4 +1,5 @@
 #include "gtest/gtest.h"
+#include "mock_fuel_calculator.hpp"
 #include "engine.h"
 #include "gearbox.h"
 
@@ -52,4 +53,14 @@ TEST_F(EngineTest, OnOff){
 TEST_F(EngineTest,Rev){
   EXPECT_GT(engine50.getARPM(),700);
   EXPECT_GT(engine100.getARPM(),700);
+}
+
+TEST_F(EngineTest, canCalc){
+  MockFuelCalculator fuel_calculator;
+  EXPECT_CALL(fuel_calculator, CalculateFuelConsumption(true))
+        .Times(1)
+        .WillRepeatedly(Return(-1));
+
+  engineOn.fuel_calculator=&fuel_calculator;
+  engineOn.updateARPM(50,GearMode::N);
 }

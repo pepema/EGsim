@@ -18,7 +18,13 @@ void Engine::updateTRPM(const uint8_t& acceleration){
 
 void Engine::updateARPM(const uint8_t& brake, const GearMode& gear){
     if(gear==GearMode::N) this->updateARPM_N();
-    else this->updateARPM_D_R(brake);       
+    else this->updateARPM_D_R(brake);
+    if(fuel_calculator!=nullptr){
+        int ret = fuel_calculator->CalculateFuelConsumption(engine_STC);
+        fuel_level += ret;
+    }
+
+
 }
 
 void Engine::updateARPM_N(){
@@ -67,6 +73,7 @@ Engine::Engine(){
     ARPM = 0;
     TRPM = 0;
     hazard = false;
+    fuel_calculator = nullptr;
 }
 
 uint16_t Engine::getARPM(){
