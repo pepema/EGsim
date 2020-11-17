@@ -61,12 +61,12 @@ struct DataBuffer{
 class CanReaderWriter{
 public:
   CanReaderWriter();
-  void SendFrame(int id,const FrameData&);
+  void writeData(uint8_t id,const FrameData&);
   
   //FrameData getData(DataBuffer&);
   //uint8_t* getData();
   //void SendShutdownCommand(int id,const  FrameData & data);
-  void readData(DataBuffer &);
+  void readData(uint8_t id, DataBuffer &);
   //void updateWrite(FrameData);
   //uint8_t* getWriteData();
 private:

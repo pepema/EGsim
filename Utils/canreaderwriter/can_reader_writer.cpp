@@ -18,7 +18,7 @@ CanReaderWriter::CanReaderWriter(){
   }
 }
 
-void CanReaderWriter::SendFrame(int id, const FrameData & output_data){
+void CanReaderWriter::writeData(uint8_t id, const FrameData & output_data){
   this->cf_to_write.id = id;
 
   std::memcpy(cf_to_write.data,output_data.data, 8*sizeof(FrameData));
@@ -58,10 +58,10 @@ void CanReaderWriter::SendShutdownCommand(int id,const FrameData & output_data){
 }
 */
 
-void CanReaderWriter::readData(DataBuffer &read_data_buffer)
+void CanReaderWriter::readData(uint8_t id, DataBuffer &read_data_buffer)
 {
   read();
-  if(cf_to_read.id == 001)
+  if(cf_to_read.id == id)
     {
         std::lock_guard<std::mutex> lk_grd(read_data_buffer.mtx);
         //for(auto i = 0; i < 8;i++)

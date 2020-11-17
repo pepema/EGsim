@@ -25,11 +25,11 @@ int main(){
         for(auto i =0;i<4;i++)
         {
           std::this_thread::sleep_for(std::chrono::milliseconds(10));
-          reader_writer.SendFrame(1,op_data);
+          reader_writer.writeData(1,op_data);
         }
         break;
       }
-      reader_writer.SendFrame(1, op_data);
+      reader_writer.writeData(1, op_data);
       handler.input_ready = false;
     }
   }

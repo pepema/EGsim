@@ -20,7 +20,7 @@ void ControlModule::SendCANFrame(){
     //FrameData *output_frame_data;
     
     //output_frame_data = reinterpret_cast<FrameData*>(output_data);
-    can_r_w->SendFrame(2,output_data);
+    can_r_w->writeData(2,output_data);
 }
 
 void ControlModule::EvaluateEngineStatus(){
