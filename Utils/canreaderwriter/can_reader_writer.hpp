@@ -33,6 +33,8 @@ typedef union FrameData{
     unsigned int accel:8;
     unsigned int gear:1;
     unsigned int RESERVED_PADDING_2:7;
+    unsigned int engine_status:1;
+    unsigned int RESERVED_PADDING_3:7;
     //
     }output;
 
