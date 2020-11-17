@@ -47,9 +47,9 @@ public:
   void writeData(uint8_t id,const FrameData&);
   void readData(uint8_t id, DataBuffer &);
 private:
-  scpp::CanFrame cf_to_write;
+  scpp::CanFrame can_frame;
   scpp::SocketCan socket_can;
-  scpp::CanFrame cf_to_read;
+  //scpp::CanFrame cf_to_read;
 };
 
 #endif //CANREADERWRITER_HPP
