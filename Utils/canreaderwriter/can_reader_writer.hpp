@@ -49,7 +49,6 @@ public:
 private:
   scpp::CanFrame can_frame;
   scpp::SocketCan socket_can;
-  //scpp::CanFrame cf_to_read;
 };
 
 #endif //CANREADERWRITER_HPP

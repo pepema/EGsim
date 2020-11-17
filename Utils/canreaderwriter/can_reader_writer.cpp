@@ -9,13 +9,6 @@ CanReaderWriter::CanReaderWriter(){
   }
   int length = 8;
   can_frame.len = length;
-  //cf_to_write.data[length] = {};
-  /*
-  for(int i =0;i<length;i++){
-    //cf_to_write.data[i]=0;
-    can_frame.data[i]=0;
-  }
-  */
   std::memset(can_frame.data, 0, length);
 }
 
