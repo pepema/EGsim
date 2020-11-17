@@ -47,12 +47,14 @@ FrameData CanReaderWriter::getData(DataBuffer &read_data_buffer)
   return read_data_buffer.frame_data;
 }
 
+/*
 void CanReaderWriter::SendShutdownCommand(int id,const FrameData & output_data){
   for(int i =0;i<4;i++){
     std::this_thread::sleep_for(std::chrono::milliseconds(10));
     this->SendFrame(id,output_data);
   }
 }
+*/
 
 void CanReaderWriter::updateReadData(DataBuffer &read_data_buffer)
 {

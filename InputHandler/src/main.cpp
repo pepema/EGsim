@@ -21,7 +21,12 @@ int main(){
       std::unique_lock<std::mutex> lk(handler.m);
       handler.cv.wait(lk,[&handler]{return handler.input_ready;});
       if(exit){
-        reader_writer.SendShutdownCommand(1,op_data);
+        //reader_writer.SendShutdownCommand(1,op_data);
+        for(auto i =0;i<4;i++)
+        {
+          std::this_thread::sleep_for(std::chrono::milliseconds(10));
+          reader_writer.SendFrame(1,op_data);
+        }
         break;
       }
       reader_writer.SendFrame(1, op_data);

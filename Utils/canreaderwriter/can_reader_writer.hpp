@@ -28,13 +28,14 @@ typedef union FrameData{
     }input;
     struct __attribute__((packed)) op_bits{
     unsigned int hazard:1;
-    unsigned int RESERVED_PADDING_1:39;
+    unsigned int RESERVED_PADDING_1:7;
+    unsigned int RESERVED_PADDING_2:24;
     unsigned int brake:8;
     unsigned int accel:8;
     unsigned int gear:1;
-    unsigned int RESERVED_PADDING_2:7;
-    unsigned int engine_status:1;
     unsigned int RESERVED_PADDING_3:7;
+    unsigned int engine_status:1;
+    unsigned int RESERVED_PADDING_4:7;
     //
     }output;
 
@@ -64,7 +65,7 @@ public:
   void read();
   FrameData getData(DataBuffer&);
   //uint8_t* getData();
-  void SendShutdownCommand(int id,const  FrameData & data);
+  //void SendShutdownCommand(int id,const  FrameData & data);
   void updateReadData(DataBuffer &);
   //void updateWrite(FrameData);
   //uint8_t* getWriteData();
