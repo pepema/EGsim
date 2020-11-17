@@ -418,7 +418,7 @@ ApplicationWindow {
             text: valueSource.txt
             width: 441
             height: 98
-            font.pixelSize: 12
+            font.pixelSize: 40
 
         }
     }
