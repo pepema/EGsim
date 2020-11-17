@@ -1,0 +1,29 @@
+@startuml Sequence Diagram
+
+actor User
+
+User ->> InputHandler : UserInput
+
+activate InputHandler
+
+InputHandler -> InputHandler : ValidKey
+
+InputHandler -> InputHandler : EncodeKey
+
+InputHandler ->> SocketCAN : SendFrame
+
+deactivate InputHandler
+
+activate EngineSimulator
+
+SocketCAN ->> EngineSimulator : Read Input CAN Message
+
+EngineSimulator -> EngineSimulator : Decode Input CAN Message
+
+EngineSimulator -> EngineSimulator : Update Signals (Speed, RPM, EngineStatus, Gear)
+
+EngineSimulator -> EngineSimulator : Encode Output Values (Speed, RPM, Engine Status, Gear to CAN)
+
+EngineSimulator --> SocketCAN : Write Output CAN Message
+
+@enduml
