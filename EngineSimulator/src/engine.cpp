@@ -43,21 +43,25 @@ void Engine::updateARPM_D_R(const uint8_t& brake){
         this->ARPM -= start_stop_rpm_step*4;
     }
     else{
-        if (brake == 0){
-            if (vroom > 0) this->ARPM+=vroom;
-            else if (vroom < 0) this->ARPM-=standard_rpm_reduction;
+        if (this->ARPM<7525){
+            if (brake == 0){
+                if (vroom > 0) this->ARPM+=vroom;
+                else if (vroom < 0) this->ARPM-=standard_rpm_reduction;
+                }
+            else if (brake > 0){
+                double acc = (this->TRPM-idle_rpm)*100/9300;
+                double brake_TRPM = TRPM-(9300*brake/100);
+                double brake_vroom = (brake_TRPM-this->ARPM)/300;
+                if (brake < acc) this->ARPM+=brake_vroom;
+                else if (brake >= acc) {
+                    if(this->ARPM < idle_rpm) this->ARPM = idle_rpm;
+                    else this->ARPM-=standard_rpm_reduction + standard_rpm_reduction*(1+brake/30);
+                }
             }
-        else if (brake > 0){
-            double acc = (this->TRPM-idle_rpm)*100/9300;
-            double brake_TRPM = TRPM-(9300*brake/100);
-            double brake_vroom = (brake_TRPM-this->ARPM)/300;
-            if (brake < acc) this->ARPM+=brake_vroom;
-            else if (brake >= acc) {
-                if(this->ARPM < idle_rpm) this->ARPM = idle_rpm;
-                else this->ARPM-=standard_rpm_reduction + standard_rpm_reduction*(1+brake/30);
             }
-        }
-    }
+        else
+            this->ARPM-=standard_rpm_reduction;   
+        }   
 
 }
 
