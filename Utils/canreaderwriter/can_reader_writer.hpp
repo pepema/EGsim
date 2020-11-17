@@ -6,13 +6,6 @@
 #include <future>
 #include <mutex>
 
-
-/*struct FrameData{
-    public:
-    uint8_t data[8];
-};*/
-
-
 typedef union FrameData{
     struct __attribute__((packed)) ip_bits{
     unsigned int speed:8;
@@ -42,43 +35,21 @@ typedef union FrameData{
     uint8_t data[8];
 };
 
-
-/*struct DataBuffer{
-  public:
-  FrameData frame_data;
-  //uint8_t frame_data[8];
-  std::mutex mtx;
-};*/
-
-
 struct DataBuffer{
   public:
   FrameData frame_data; 
   std::mutex mtx;
 };
 
-
 class CanReaderWriter{
 public:
   CanReaderWriter();
   void writeData(uint8_t id,const FrameData&);
-  
-  //FrameData getData(DataBuffer&);
-  //uint8_t* getData();
-  //void SendShutdownCommand(int id,const  FrameData & data);
   void readData(uint8_t id, DataBuffer &);
-  //void updateWrite(FrameData);
-  //uint8_t* getWriteData();
 private:
-  //void read();
   scpp::CanFrame cf_to_write;
   scpp::SocketCan socket_can;
   scpp::CanFrame cf_to_read;
-  //DataBuffer read_data_buffer;
-  //DataBuffer read_data_buffer;
-  //FrameData write_data;
-  //FrameData write_data;
-  //uint8_t read_data_buffer[8];
 };
 
 #endif //CANREADERWRITER_HPP
