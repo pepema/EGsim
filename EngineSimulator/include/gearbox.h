@@ -17,7 +17,7 @@ private:
     uint16_t speed;
 
 public:
-    void updateGear(const uint8_t& gearin, const uint8_t& brake);
+    void updateGear(const GearMode&);
     void updateSpeed(const uint16_t& ARPM);
     void gearShiftUp();
     void gearShiftDown();
