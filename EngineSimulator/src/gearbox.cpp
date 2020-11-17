@@ -6,7 +6,7 @@ Gearbox::Gearbox(){
     speed=0;
  }
 
-void Gearbox::updateGear(const GearMode& gear_mode){
+void Gearbox::updateGearMode(const GearMode& gear_mode){
     this->gear_mode = gear_mode;
 }
 
@@ -26,7 +26,7 @@ void Gearbox::updateSpeed(const uint16_t& ARPM){
 
     else if (gear_mode==GearMode::R)
         if(ARPM>700)
-            tempspeed = (ARPM-700)/150;
+            tempspeed = (ARPM-700)*gear_ratio[gear];
         else
             tempspeed = 0;
 
