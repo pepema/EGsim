@@ -16,7 +16,7 @@ typedef union FrameData{
     unsigned int RESERVED_PADDING_2:6;
     unsigned int RESERVED_PADDING_3:24;
     }input;
-    
+
     struct __attribute__((packed)) op_bits{
     unsigned int hazard:1;
     unsigned int RESERVED_PADDING_1:7;
@@ -37,5 +37,11 @@ struct DataBuffer{
   FrameData frame_data; 
   std::mutex mtx;
 };
+
+namespace ntwrk
+{
+    static const std::string CHANNEL = "vcan0";
+    static const uint8_t DATALENGTH = 8;
+}
 
 #endif
