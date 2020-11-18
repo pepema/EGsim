@@ -16,13 +16,6 @@ void ControlModule::PowertrainControl(){
         engine.updateARPM(signals.getBrakeinput(),gearbox.getGearMode());
 }
 
-void ControlModule::SendCANFrame(){
-    //FrameData *output_frame_data;
-    
-    //output_frame_data = reinterpret_cast<FrameData*>(output_data);
-    can_r_w->writeData(2,output_data);
-}
-
 void ControlModule::SetGearMode(){
     if(gearbox.getSpeed()==0 && signals.getBrakeinput()>0 && engine.getEngineStatus()==1){
 
@@ -53,10 +46,6 @@ void ControlModule::ShiftGear(){
             shift_down = false;
         }
     }
-}
-
-void ControlModule::SetOutputFrame(){
-    output_data = encoder.get_frame_data_op();
 }
 
 void ControlModule::DummyDim(){
@@ -90,6 +79,7 @@ void ControlModule::Run(DataBuffer& input_frame_buffer)
         engine.setHazard(signals.getHazard());
         
         //update Signals : Speed, RPM, Engine Status, Gear
+        
         //Evaluate Engine status
         engine.setEngineStatus(signals.getEngineStatus());
 
@@ -99,14 +89,15 @@ void ControlModule::Run(DataBuffer& input_frame_buffer)
      
         //Encode output values : Speed, RPM, Engine Status, Gear to CAN
         Encode();
+        
         //SetOutputFrame();
         output_data = encoder.get_frame_data_op();
+        
         //Send CAN message
-        //SendCANFrame();
         can_r_w->writeData(2,output_data);
+        
         //Showing the values from output CAN Frame
         std::this_thread::sleep_for(std::chrono::milliseconds(10));
-
         DummyDim(); // Display current internal states
     }   
 }

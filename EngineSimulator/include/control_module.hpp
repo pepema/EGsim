@@ -17,9 +17,7 @@ class ControlModule{
     void CalculateGear();
     void ShiftGear();
     void Encode();
-    void SetOutputFrame();
     void SetGearMode();
-    void SendCANFrame();
     void DummyDim();
 
     ControlModule(CanReaderWriter*);
