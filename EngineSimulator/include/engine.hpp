@@ -1,7 +1,7 @@
-#ifndef ENGINE_H
-#define ENGINE_H
+#ifndef ENGINE_HPP
+#define ENGINE_HPP
 #include <iostream>
-#include "gearbox.h"
+#include "gearbox.hpp"
 using namespace std;
 
 namespace engparams{

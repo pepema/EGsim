@@ -1,13 +1,13 @@
-#ifndef CONTROL_MODULE_H
-#define CONTROL_MODULE_H
+#ifndef CONTROL_MODULE_HPP
+#define CONTROL_MODULE_HPP
 #include <thread>
 #include <iomanip>
 #include <future>
-#include "signal_decoder.h"
-#include "can_encoder.h"
+#include "signals.hpp"
+#include "can_encoder.hpp"
 #include "can_reader_writer.hpp"
-#include "engine.h"
-#include "gearbox.h"
+#include "engine.hpp"
+#include "gearbox.hpp"
 
 
 class ControlModule{
@@ -32,7 +32,7 @@ class ControlModule{
     bool shift_up, shift_down;
     Engine engine;
     Gearbox gearbox;
-    SignalDecoder signal_decoder;
+    Signals signals;
     CANEncoder encoder;
     FrameData output_data;
     CanReaderWriter* can_r_w;

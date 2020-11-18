@@ -1,4 +1,4 @@
-#include "gearbox.h"
+#include "gearbox.hpp"
 
 Gearbox::Gearbox(){
     gear_mode=GearMode::N;

@@ -1,8 +1,8 @@
-#ifndef CANENCODER_H
-#define CANENCODER_H
+#ifndef CANENCODER_HPP
+#define CANENCODER_HPP
 
-#include "signal_decoder.h"
-#include "gearbox.h"
+#include "signals.hpp"
+#include "gearbox.hpp"
 
 class CANEncoder
 {

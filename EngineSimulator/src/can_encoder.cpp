@@ -1,23 +1,23 @@
-#include "can_encoder.h"
+#include "can_encoder.hpp"
 
 CANEncoder::CANEncoder()
 {
-    frame_data_op.data[0] = cnsts::SPEED; 
+    frame_data_op.data[0] = cnsts::kSpeed; 
     //frame_data_op[0] = cnsts::SPEED; 
     
     
-    frame_data_op.data[1] = cnsts::LRPM;
-    frame_data_op.data[2] = cnsts::MRPM;
+    frame_data_op.data[1] = cnsts::kLRpm;
+    frame_data_op.data[2] = cnsts::kMRpm;
     /*
     frame_data_op[1] = cnsts::LRPM;
     frame_data_op[2] = cnsts::MRPM;
     */
 
-    frame_data_op.data[3] = cnsts::ENGSTATUS;
+    frame_data_op.data[3] = cnsts::kEngineStatus;
     //frame_data_op[3] = cnsts::ENGSTATUS;
 
 
-    frame_data_op.data[4] = cnsts::GEAR;
+    frame_data_op.data[4] = cnsts::kGear;
     //frame_data_op[4] = cnsts::GEAR;
 
     //Reserved Data bytes
