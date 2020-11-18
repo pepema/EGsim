@@ -30,7 +30,7 @@ void yourStuff::YouHaveJustRecievedACANFrame(const canfd_frame * const _frame) {
         const struct CAN::MSG::Gauges_t::_inner* s = reinterpret_cast<const struct CAN::MSG::Gauges_t::_inner* >((_frame->data));
 
         this->InstrumentCluster.setFuelGauges(s->G_FUEL);
-        this->InstrumentCluster.setTemperatureGauges(s->G_TEMP);
+        this->InstrumentCluster.setTemperatureGauges(s-> G_TEMP);
         this->InstrumentCluster.setOilTemperatureGauges(s->G_OILT);
         CAN::MSG::printGauges(s);
     }

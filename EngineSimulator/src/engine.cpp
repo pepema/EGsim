@@ -3,14 +3,14 @@
 void Engine::updateTRPM(const uint8_t& acceleration){
     if(this->engine_STC)
         if (acceleration > 0)
-            if(acceleration == 110) this->TRPM = 0xFFFF;
-            else if(acceleration == 120) this->TRPM = 0xFFFE;
-            else this->TRPM=idle_rpm+(10000-idle_rpm)*(acceleration)/100;
+            if(acceleration == engparams::kShiftDownEngineAcc) this->TRPM = engparams::kTRPMforShiftDown;
+            else if(acceleration == engparams::kShiftUpEngineAcc) this->TRPM = engparams::kTRPMforShiftUp;
+            else this->TRPM=engparams::kIdleRpm+engparams::kRpmWorkRange*(acceleration)/100;
         else
-            this->TRPM=idle_rpm;
+            this->TRPM=engparams::kIdleRpm;
     else
-        if(acceleration == 110) this->TRPM = 0xFFFF;
-        else if(acceleration == 120) this->TRPM = 0xFFFE;
+        if(acceleration == engparams::kShiftDownEngineAcc) this->TRPM = engparams::kTRPMforShiftDown;
+        else if(acceleration == engparams::kShiftDownEngineAcc) this->TRPM = engparams::kTRPMforShiftUp;
         else
             this->TRPM=0;
     }
@@ -22,47 +22,46 @@ void Engine::updateARPM(const uint8_t& brake, const GearMode& gear){
 }
 
 void Engine::updateARPM_N(){
-    double vroom=static_cast<double>(this->TRPM-this->ARPM)/300;
-    if(TRPM == 0 && ARPM <= idle_rpm){
-        if(this->ARPM <= start_stop_rpm_step) this->ARPM = 0;
-        else this->ARPM -= start_stop_rpm_step;
+    double rpm_increment=static_cast<double>(this->TRPM-this->ARPM)/engparams::kRpmIncrementDivisor;
+    if(TRPM == 0 && ARPM <= engparams::kIdleRpm){
+        if(this->ARPM <= engparams::kStartStopRpmStep) this->ARPM = 0;
+        else this->ARPM -= engparams::kStartStopRpmStep;
     }
-    else if (TRPM != 0 && ARPM < idle_rpm) this->ARPM +=start_stop_rpm_step;
+    else if (TRPM != 0 && ARPM < engparams::kIdleRpm) this->ARPM +=engparams::kStartStopRpmStep;
     else{
-        if (vroom > 0) this->ARPM+=start_stop_rpm_step*5;
-        else if (vroom < 0) this->ARPM-=start_stop_rpm_step*3;
+        if (rpm_increment > 0) this->ARPM+=engparams::kStartStopRpmStep*5;
+        else if (rpm_increment < 0) this->ARPM-=engparams::kStartStopRpmStep*3;
     }
 }
 
 void Engine::updateARPM_D_R(const uint8_t& brake){
-    double vroom=static_cast<double>(this->TRPM-this->ARPM)/300;
-    if(this->TRPM == 0xFFFF){
-        this->ARPM += start_stop_rpm_step*4;
+    double rpm_increment=static_cast<double>(this->TRPM-this->ARPM)/engparams::kRpmIncrementDivisor;
+    if(this->TRPM == engparams::kTRPMforShiftDown){
+        this->ARPM += engparams::kStartStopRpmStep*4;
     }
-    else if(this->TRPM == 0xFFFE){
-        this->ARPM -= start_stop_rpm_step*4;
+    else if(this->TRPM == engparams::kTRPMforShiftUp){
+        this->ARPM -= engparams::kStartStopRpmStep*4;
     }
     else{
-        if (this->ARPM<7525){
+        if (this->ARPM<engparams::kRpmCapInDrive){
             if (brake == 0){
-                if (vroom > 0) this->ARPM+=vroom;
-                else if (vroom < 0) this->ARPM-=standard_rpm_reduction;
+                if (rpm_increment > 0) this->ARPM+=rpm_increment;
+                else if (rpm_increment < 0) this->ARPM-=engparams::kStandardRpmReduction;
                 }
             else if (brake > 0){
-                double acc = (this->TRPM-idle_rpm)*100/9300;
-                double brake_TRPM = TRPM-(9300*brake/100);
-                double brake_vroom = (brake_TRPM-this->ARPM)/300;
-                if (brake < acc) this->ARPM+=brake_vroom;
+                double acc = (this->TRPM-engparams::kIdleRpm)*100/engparams::kRpmWorkRange;
+                double brake_TRPM = TRPM-(engparams::kRpmWorkRange*brake/100);
+                double brake_rpm_increment = (brake_TRPM-this->ARPM)/engparams::kRpmIncrementDivisor;
+                if (brake < acc) this->ARPM+=brake_rpm_increment;
                 else if (brake >= acc) {
-                    if(this->ARPM < idle_rpm) this->ARPM = idle_rpm;
-                    else this->ARPM-=standard_rpm_reduction + standard_rpm_reduction*(1+brake/30);
+                    if(this->ARPM < engparams::kIdleRpm) this->ARPM = engparams::kIdleRpm;
+                    else this->ARPM-=engparams::kStandardRpmReduction + engparams::kStandardRpmReduction*(1+brake/30);
                 }
             }
-            }
+        }
         else
-            this->ARPM-=standard_rpm_reduction;   
+            this->ARPM-=engparams::kStandardRpmReduction;   
         }   
-
 }
 
 
