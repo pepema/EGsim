@@ -135,7 +135,7 @@ void ControlModule::CalculateGear(){
     else if(gearbox.getGear() == 1 && gearbox.getGearMode() == GearMode::N){
         shift_down = true;
     }
-    else if(gearbox.getGear() == 0 && signal_decoder.getAcceleration() > 0 && gearbox.getGearMode() == GearMode::R){
+    else if(gearbox.getGear() == 0 && signals.getAcceleration() > 0 && gearbox.getGearMode() == GearMode::R){
         gearbox.gearShiftUp();
     }
 }
