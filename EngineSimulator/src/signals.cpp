@@ -40,7 +40,6 @@ uint8_t Signals::getBrakeinput(){
 bool Signals::getHazard()
 {   
     if(frame_data_ip.data[0] == 0)
-    //if(frame_data_ip[0] == 0)
     {
         return false;
     }

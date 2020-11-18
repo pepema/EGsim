@@ -76,11 +76,21 @@ void ControlModule::DummyDim(){
                 << '\r' << std::flush;
 }
 
+/*
 bool ControlModule::EvaluateHazard(){       
     engine.setHazard(signals.getHazard());
     if(engine.getHazard() == true) return true;
     else return false;
 }
+*/
+/*
+bool ControlModule::NoHazard()
+{
+    engine.setHazard(signals.getHazard());
+    if(engine.getHazard() == true) return true;
+    else return false;
+}
+*/
 
 void ControlModule::Encode(){
     encoder.encodeEngineStatus(engine.getEngineStatus());
@@ -92,16 +102,21 @@ void ControlModule::Encode(){
 
 void ControlModule::Run(DataBuffer& input_frame_buffer)
 {
-    while(1)
+    while(engine.getHazard() == false)
     {
         //decode input CAN message
         signals.setFrame(input_frame_buffer.frame_data);
         //DecodeInputCan(input_frame_buffer);
         //Crash if Hazard
-        if(EvaluateHazard()) break;
+
+        //NoHazard();
+        engine.setHazard(signals.getHazard());
+
+        //if(NoHazard()) break;
         
         //update Signals : Speed, RPM, Engine Status, Gear
-        EvaluateEngineStatus();
+        //EvaluateEngineStatus();
+        engine.setEngineStatus(signals.getEngineStatus());
         SetGearMode();
         CalculateGear();
         PowertrainControl();
@@ -140,9 +155,11 @@ void ControlModule::CalculateGear(){
     }
 }
 
+/*
 void ControlModule::DecodeInputCan(DataBuffer& input_frame_buffer)
 {
     //std::cout<<"Inside Decode input can control module" <<std::endl;
     //signal_decoder.setIpFrame(can_r_w->getData(input_frame_buffer));
     signals.setFrame(input_frame_buffer.frame_data);
 }
+*/
