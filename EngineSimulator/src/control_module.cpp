@@ -1,4 +1,4 @@
-#include "control_module.h"
+#include "control_module.hpp"
 
 ControlModule::ControlModule(CanReaderWriter* can_reader_writer){
     this->can_r_w=can_reader_writer;
@@ -10,10 +10,10 @@ void ControlModule::PowertrainControl(){
         if(shift_up || shift_down) 
             ShiftGear();
         else {
-            engine.updateTRPM(signal_decoder.getAcceleration());
+            engine.updateTRPM(signals.getAcceleration());
             gearbox.updateSpeed(engine.getARPM());
         }
-        engine.updateARPM(signal_decoder.getBrakeinput(),gearbox.getGearMode());
+        engine.updateARPM(signals.getBrakeinput(),gearbox.getGearMode());
 }
 
 void ControlModule::SendCANFrame(){
@@ -24,16 +24,16 @@ void ControlModule::SendCANFrame(){
 }
 
 void ControlModule::EvaluateEngineStatus(){
-    engine.setEngineStatus(signal_decoder.getEngineStatus());
+    engine.setEngineStatus(signals.getEngineStatus());
 }
 
 
 void ControlModule::SetGearMode(){
-    if(gearbox.getSpeed()==0 && signal_decoder.getBrakeinput()>0 && engine.getEngineStatus()==1){
+    if(gearbox.getSpeed()==0 && signals.getBrakeinput()>0 && engine.getEngineStatus()==1){
 
-        if(signal_decoder.getGearinput()==1)
+        if(signals.getGearinput()==1)
             gearbox.updateGearMode(GearMode::D);
-        else if(signal_decoder.getGearinput()==2)
+        else if(signals.getGearinput()==2)
             gearbox.updateGearMode(GearMode::R);
         else
             gearbox.updateGearMode(GearMode::N);
@@ -71,13 +71,13 @@ void ControlModule::DummyDim(){
                 << " RPM: "                 << std::setfill(' ') << std::setw(5) << static_cast<int>(print_rpm)
                 << " EngineStatus: "        << static_cast<int>(output_data.data[3])
                 << " GearMode: "            << std::setfill(' ') << std::setw(1) << static_cast<int>(output_data.data[4])
-                << " Brake: "               << std::setfill(' ') << std::setw(3) << static_cast<int>(signal_decoder.getBrakeinput()) << "%"
-                << " Acceleration: "        << std::setfill(' ') << std::setw(3) << static_cast<int>(signal_decoder.getAcceleration()) << "%"   
+                << " Brake: "               << std::setfill(' ') << std::setw(3) << static_cast<int>(signals.getBrakeinput()) << "%"
+                << " Acceleration: "        << std::setfill(' ') << std::setw(3) << static_cast<int>(signals.getAcceleration()) << "%"   
                 << '\r' << std::flush;
 }
 
 bool ControlModule::EvaluateHazard(){       
-    engine.setHazard(signal_decoder.getHazard());
+    engine.setHazard(signals.getHazard());
     if(engine.getHazard() == true) return true;
     else return false;
 }
@@ -95,7 +95,8 @@ void ControlModule::Run(DataBuffer& input_frame_buffer)
     while(1)
     {
         //decode input CAN message
-        DecodeInputCan(input_frame_buffer);
+        signals.setFrame(input_frame_buffer.frame_data);
+        //DecodeInputCan(input_frame_buffer);
         //Crash if Hazard
         if(EvaluateHazard()) break;
         
@@ -121,7 +122,7 @@ void ControlModule::Run(DataBuffer& input_frame_buffer)
 
 void ControlModule::CalculateGear(){
     if(gearbox.getGearMode() == GearMode::D){
-        if(gearbox.getGear() == 0 && signal_decoder.getAcceleration() > 0){
+        if(gearbox.getGear() == 0 && signals.getAcceleration() > 0){
             gearbox.gearShiftUp();
         }
         else if(gearbox.getGear()<6 && engine.getARPM()>=4500){
@@ -140,5 +141,5 @@ void ControlModule::DecodeInputCan(DataBuffer& input_frame_buffer)
 {
     //std::cout<<"Inside Decode input can control module" <<std::endl;
     //signal_decoder.setIpFrame(can_r_w->getData(input_frame_buffer));
-    signal_decoder.setIpFrame(input_frame_buffer.frame_data);
+    signals.setFrame(input_frame_buffer.frame_data);
 }

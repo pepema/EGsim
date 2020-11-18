@@ -1,5 +1,5 @@
-#ifndef GEARBOX_H
-#define GEARBOX_H
+#ifndef GEARBOX_HPP
+#define GEARBOX_HPP
 #include <iostream>
 #include <cmath>
 #include <array>
