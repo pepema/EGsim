@@ -8,13 +8,14 @@
 bool InputHandler::init(const std::string &_canIFname) {
     std::memset(this->ICONs.Data,0x00,sizeof (CAN::MSG::Iconss_t::_bits));
     std::memset(this->GAUGs.Data,0x00,sizeof (CAN::MSG::Gauges_t::_inner));
-
     return this->CANBUS_Writer.open(_canIFname);
 }
 
+
 bool InputHandler::run() {
+    bool ret = true;
     KeyboardReader::KeyBehaviour_t key = this->KeyboardReader.readKeyBehaviour();
-    bool ret = this->encodKey(key);
+    if (key.second != X11::NADA) ret = ret &&this->encodKey(key);
     if (this->StateIsChanged) {
         this->printState();
         this->StateIsChanged = false;
@@ -24,29 +25,34 @@ bool InputHandler::run() {
         for(auto &_e: this->PushedKeys)
             this->keyIsPushed(_e);
 
+//    std::cout /*<< "Key " << <<" " */<< (int)(this->GaugeSensetivity)<< " is not defined!" << std::endl;
     ret = ret&&this->CANBUS_Writer.write(CAN::MSG::ICONSS_ID,
-                                  sizeof (CAN::MSG::Iconss_t),
-                                  this->ICONs.Data);
+                                         sizeof (CAN::MSG::Iconss_t),
+                                         reinterpret_cast<uint8_t*>(&(this->ICONs)));
     ret = ret&&this->CANBUS_Writer.write(CAN::MSG::GAUGES_ID,
-                                  sizeof (CAN::MSG::GAUGES_ID),
-                                  this->GAUGs.Data);
+                                         sizeof (CAN::MSG::GAUGES_ID),
+                                         this->GAUGs.Data);
+    ret = ret&&this->CANBUS_Writer.write(CAN::MSG::USERIN_ID,
+                                         sizeof (CAN::MSG::_userin),
+                                         reinterpret_cast<uint8_t*>(&(this->USRIn)));
 
-    std::cout /*<< "Key " << <<" " */<< (int)(this->GaugeSensetivity)<< " is not defined!" << std::endl;
+
 
     return ret;
 }
 
 bool InputHandler::encodKey(const KeyboardReader::KeyBehaviour_t &_k) {
     bool ret = true;
-    if(X11::DEFINED_KEYS.find(_k.second)==X11::DEFINED_KEYS.end())
-        std::cout << "Key " << _k.second << " is not defined!" << std::endl;
-    else if (_k.second == X11::EXIT) ret = false;
+    KeyboardReader::Key_t k = _k.second;
+    if(X11::DEFINED_KEYS.find(k)==X11::DEFINED_KEYS.end())
+        std::cout << "Key " << k << " is not defined!" << std::endl;
+    else if (k == X11::EXIT) ret = false;
     else if (_k.first == KeyRelease) ret = this->keyIsReleased(_k.second);
-    else if (_k.first == KeyPress)   ret = this->keyIsPressed(_k.second);
+    else                             ret = this->keyIsPressed(_k.second);
     return ret;
 }
 
-bool InputHandler::keyIsPressed(const unsigned int &_k) {
+bool InputHandler::keyIsPressed(const KeyboardReader::Key_t &_k) {
     bool ret = true;
     this->StateIsChanged = true;
     switch (_k) {
@@ -76,7 +82,7 @@ bool InputHandler::keyIsPressed(const unsigned int &_k) {
         this->PushedKeys.insert(X11::OLUP);
         break;
     case X11::TMDN:
-        this->PushedKeys.insert(X11::TMUP);
+        this->PushedKeys.insert(X11::TMDN);
         break;
     case X11::TMUP:
         this->PushedKeys.insert(X11::TMUP);
@@ -88,14 +94,16 @@ bool InputHandler::keyIsPressed(const unsigned int &_k) {
         this->PushedKeys.insert(X11::FLUP);
         break;
     default:
+        //ret = false;
         std::cout << "Pressed Key is: " << X11::KeyToString(_k) << std::endl;
         break;
     }
     return ret;
 }
 
-bool InputHandler::keyIsReleased(const unsigned int &_k) {
+bool InputHandler::keyIsReleased(const KeyboardReader::Key_t &_k) {
     this->StateIsChanged = true;
+    bool ret = true;
     switch (_k) {
     /* LEDs UP TOP */
     case X11::ICN0:
@@ -135,7 +143,7 @@ bool InputHandler::keyIsReleased(const unsigned int &_k) {
         this->PushedKeys.erase(X11::OLUP);
         break;
     case X11::TMDN:
-        this->PushedKeys.erase(X11::TMUP);
+        this->PushedKeys.erase(X11::TMDN);
         break;
     case X11::TMUP:
         this->PushedKeys.erase(X11::TMUP);
@@ -152,15 +160,16 @@ bool InputHandler::keyIsReleased(const unsigned int &_k) {
         break;
     case X11::BREK:
             this->State->InputState.ENGINE.BREK_P=0;
-        break;
-    case X11::IGNT:
-            this->State->InputState.ENGINE.IGNT=!this->State->InputState.ENGINE.IGNT;
         break;*/
+    case X11::IGNT:
+            this->USRIn.IGNT=!this->USRIn.IGNT;
+        break;
     default:
-            std::cout << "Released Key is: " << X11::KeyToString(_k) << std::endl;
+        //ret = false;
+        std::cout << "Released Key is: " << X11::KeyToString(_k) << std::endl;
         break;
     }
-    return true;
+    return ret;
 }
 
 void InputHandler::keyIsPushed(const unsigned int &_k) {
@@ -197,6 +206,6 @@ void InputHandler::printState() {
     std::cout << "+++++ USERIN:" << std::endl;
     CAN::MSG::printUserIn(this->USRIn);
     std::cout << "+++++ ICONSS:" << std::endl;
-    CAN::MSG::printIconss(&(this->ICONs.Bits));
+    //CAN::MSG::printIconss(&(this->ICONs.Bits));
     std::cout << std::endl;
 }

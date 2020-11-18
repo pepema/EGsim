@@ -6,7 +6,7 @@ using namespace std;
 
 namespace engparams{
     
-    static const uint16_t kIdleRpm = 700;                   //Idle RPM of the engine
+    static const uint16_t kIdleRpm = 1400;                   //Idle RPM of the engine
     static const uint16_t kMaxRpm = 10000;                  //Maximum RPM of engine
     static const uint16_t kRpmWorkRange = kMaxRpm-kIdleRpm; //Working range of engine
     static const uint16_t kRpmIncrementDivisor = 300;       //Adjusts the acceleration
