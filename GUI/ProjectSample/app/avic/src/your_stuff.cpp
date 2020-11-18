@@ -6,7 +6,7 @@
 
 namespace CANID {
 const canid_t ENGINE_AND_GEARBOX = 0x2;
-const canid_t SHUTDOWN = 0x1;
+const canid_t INPUTHANDLER = 0x1;
 const canid_t ICONZ = 0x213;
 }
 
@@ -21,7 +21,7 @@ void yourStuff::YouHaveJustRecievedACANFrame(const canfd_frame * const _frame) {
         this->InstrumentCluster.ignite(_frame->data[3]);
     }
         break;
-    case CANID::SHUTDOWN: {
+    case CANID::INPUTHANDLER: {
         SetIcons(_frame->data[1], _frame->data[2]);
         if(_frame->data[0]!=0) exit(0);
         QString accbrake = "Acceleration: " + QString::number(_frame->data[6]) + "%\n" 
