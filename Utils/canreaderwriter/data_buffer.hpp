@@ -30,7 +30,7 @@ typedef union FrameData{
     }output;
 
     uint8_t data[8];
-};
+}frame_data_structure;
 
 struct DataBuffer{
   public:
