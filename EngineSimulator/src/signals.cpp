@@ -3,11 +3,12 @@
 
 Signals::Signals()
 { 
-    for(auto i = 0 ; i < 8 ; i++)
+    /*for(auto i = 0 ; i < 8 ; i++)
     {
         frame_data_ip.data[i] = 0;
         //frame_data_ip[i] = 0;
-    }
+    }*/
+    std::memset(frame_data_ip.data, 0, sizeof(frame_data_ip.data));
 }
 
 Signals::~Signals()
