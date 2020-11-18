@@ -1,4 +1,5 @@
 #include "gearbox.hpp"
+#include "engine.hpp"
 
 Gearbox::Gearbox(){
     gear_mode=GearMode::N;
@@ -13,9 +14,9 @@ void Gearbox::setGearMode(const GearMode& gear_mode){
 void Gearbox::updateSpeed(const uint16_t& ARPM){
     double tempspeed;
     if (gear_mode==GearMode::D || gear_mode==GearMode::R)
-        if(ARPM>700)
+        if(ARPM>engparams::kIdleRpm)
             if(gear==1)
-                tempspeed = (ARPM-700)*gear_ratio[gear];
+                tempspeed = (ARPM-engparams::kIdleRpm)*gear_ratio[gear];
             else if(gear > 1)
                 tempspeed = ARPM*gear_ratio[gear];
         else
@@ -26,7 +27,6 @@ void Gearbox::updateSpeed(const uint16_t& ARPM){
 
     speed = tempspeed;
 }
-
 
 void Gearbox::gearShiftUp(){
     gear +=1;
