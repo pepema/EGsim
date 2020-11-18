@@ -95,7 +95,7 @@ Item {
     property bool hand_break: false
     property bool right_blinker: false
     property bool startUp: false
-    property string txt: "Nothing"
+    property string txt: " "
 
 
     function randomDirection() {

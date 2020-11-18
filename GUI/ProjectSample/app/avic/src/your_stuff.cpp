@@ -22,12 +22,15 @@ void yourStuff::YouHaveJustRecievedACANFrame(const canfd_frame * const _frame) {
         break;
     case CANID::SHUTDOWN: {
         if(_frame->data[0]!=0) exit(0);
+        QString accbrake = "Acceleration: " + QString::number(_frame->data[6]) + "%\n" 
+                           "Brake power: " + QString::number(_frame->data[4]) + "%";
+        this->InstrumentCluster.setText(accbrake);
     }
     case CAN::MSG::GAUGES_ID: {
         const struct CAN::MSG::Gauges_t::_inner* s = reinterpret_cast<const struct CAN::MSG::Gauges_t::_inner* >((_frame->data));
 
         this->InstrumentCluster.setFuelGauges(s->G_FUEL);
-        this->InstrumentCluster.setTemperatureGauges(s->G_TEMP);
+        this->InstrumentCluster.setTemperatureGauges(s-> G_TEMP);
         this->InstrumentCluster.setOilTemperatureGauges(s->G_OILT);
         CAN::MSG::printGauges(s);
     }

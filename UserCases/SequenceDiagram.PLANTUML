@@ -1,12 +1,22 @@
 @startuml Sequence Diagram
 
-Keyboard -> SocketCAN : UserInput
+actor User
 
-InputHandler -> SocketCAN : SendFrame
+User ->> InputHandler : UserInput
+
+activate InputHandler
+
+InputHandler -> InputHandler : ValidKey
+
+InputHandler -> InputHandler : EncodeKey
+
+InputHandler ->> SocketCAN : SendFrame
+
+deactivate InputHandler
 
 activate EngineSimulator
 
-SocketCAN -> EngineSimulator : Read Input CAN Message
+SocketCAN ->> EngineSimulator : Read Input CAN Message
 
 EngineSimulator -> EngineSimulator : Decode Input CAN Message
 
