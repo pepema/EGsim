@@ -4,10 +4,13 @@
 #include <cmath>
 #include <array>
 
-
-
-
 enum class GearMode {N, D, R};
+
+namespace gearboxparams
+{
+    static const uint16_t kGearUpRpm = 4500;
+    static const uint16_t kGearDownRpm = 1500;
+}
 
 class Gearbox
 {
@@ -17,7 +20,7 @@ private:
     uint16_t speed;
 
 public:
-    void updateGearMode(const GearMode&);
+    void setGearMode(const GearMode&);
     void updateSpeed(const uint16_t& ARPM);
     void gearShiftUp();
     void gearShiftDown();

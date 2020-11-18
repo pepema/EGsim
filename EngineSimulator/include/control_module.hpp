@@ -14,18 +14,13 @@ class ControlModule{
     public:
     void Run(DataBuffer &);
     void PowertrainControl();
-    void EvaluateEngineStatus();
     void CalculateGear();
     void ShiftGear();
-    //bool EvaluateHazard();
-    bool NoHazard();
     void Encode();
     void SetOutputFrame();
     void SetGearMode();
     void SendCANFrame();
     void DummyDim();
-    //inline void DecodeInputCan(DataBuffer& input_frame_buffer){signal_decoder.setIpFrame(can_r_w->getData());}
-    //void DecodeInputCan(DataBuffer& input_frame_buffer);
 
     ControlModule(CanReaderWriter*);
     
