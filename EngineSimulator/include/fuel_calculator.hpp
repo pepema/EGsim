@@ -6,6 +6,9 @@ public:
   FuelCalculator() = default;
   virtual ~FuelCalculator(){}
   virtual int CalculateFuelConsumption(bool EngineState) = 0;
+  virtual int FuelUsed() = 0;
+  virtual int FuelAge() = 0;
+  virtual void Refuel(int amount) = 0;
 };
 
 #endif

@@ -84,7 +84,26 @@ bool Engine::getEngineStatus(){
     return engine_STC;
 }
 void Engine::setEngineStatus(const bool& ES){
-    engine_STC = ES;
+    
+    bool change_to = ES;
+    //if engine turns off
+    
+    if(ES==0 && engine_STC ==1){
+        if(fuel_calculator!=nullptr){
+            fuel_used_last_cycle = fuel_calculator->FuelUsed();
+        }
+    }
+    //if engine turns on
+    if(ES==1 && engine_STC ==0){
+        if(fuel_calculator!=nullptr){
+            fuel_age = fuel_calculator->FuelAge();
+            if(fuel_age > 0){
+                change_to = false;
+            }
+        }
+    }
+
+    engine_STC = change_to;
 }
 
 void Engine::setHazard(const bool& hazard)

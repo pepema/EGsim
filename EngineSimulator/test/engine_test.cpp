@@ -65,8 +65,10 @@ TEST_F(EngineTest, canCalc){
   engineOn.updateARPM(50,GearMode::N);
 }
 
+using ::testing::NiceMock;
+
 TEST(SomeFuelConsumption, AtSpeed50){
-  MockFuelCalculator fuel_calculator;
+  NiceMock<MockFuelCalculator> fuel_calculator;
   Engine e;
   EXPECT_CALL(fuel_calculator, CalculateFuelConsumption(true))
       .Times(::testing::AnyNumber())
@@ -84,4 +86,78 @@ TEST(SomeFuelConsumption, AtSpeed50){
 
   EXPECT_GT(e.getARPM(),500);
   EXPECT_LT(e.getFuelLevel(),100);
+}
+
+TEST(SomeFuelConsumption, NiceMock){
+  NiceMock<MockFuelCalculator> fuel_calculator;
+  Engine e;
+  EXPECT_CALL(fuel_calculator, CalculateFuelConsumption(true))
+      .Times(::testing::AnyNumber())
+      .WillRepeatedly(Return(-1));
+  EXPECT_CALL(fuel_calculator, FuelUsed())
+      .Times(::testing::AnyNumber())
+      .WillRepeatedly(Return(10));
+  
+  e.fuel_calculator=&fuel_calculator;
+  e.setEngineStatus(true);
+  e.updateTRPM(50);
+  int iters = 0;
+  do{
+    e.updateARPM(0,GearMode::D);
+    iters++;
+
+  } while (iters<5000);
+
+  EXPECT_GT(e.getARPM(),500);
+  EXPECT_LT(e.getFuelLevel(),100);
+
+  //After engine has been turned off, make sure that some fuel was used during last drive cycle
+  e.setEngineStatus(false);
+  EXPECT_GT(e.GetFuelUsed(),0);
+
+}
+
+using ::testing::StrictMock;
+
+TEST(SomeFuelConsumption, StrictMock){
+  StrictMock<MockFuelCalculator> fuel_calculator;
+  Engine e;
+  EXPECT_CALL(fuel_calculator, CalculateFuelConsumption(true))
+      .Times(::testing::AnyNumber())
+      .WillRepeatedly(Return(-1));
+  //Add expected vall to fuel age since it is default
+  EXPECT_CALL(fuel_calculator, FuelAge())
+      .Times(::testing::AnyNumber());
+  
+  e.fuel_calculator=&fuel_calculator;
+  e.setEngineStatus(true);
+  e.updateTRPM(50);
+  int iters = 0;
+  do{
+    e.updateARPM(0,GearMode::D);
+    iters++;
+
+  } while (iters<5000);
+
+  EXPECT_GT(e.getARPM(),500);
+  EXPECT_LT(e.getFuelLevel(),100);
+
+  //Just to learn strict mock, uncomment last line and test will fail
+  //If we turn off engine, FuelUsed will be called but it is "uninteresting" since we
+  //do not have it as an expected call for this test
+  
+  //e.setEngineStatus(false);
+}
+
+TEST(NoStart, FuelAge){
+  NiceMock<MockFuelCalculator> fuel_calculator;
+  Engine e;
+  ON_CALL(fuel_calculator, FuelAge()).WillByDefault(Return(10));
+  EXPECT_CALL(fuel_calculator, FuelAge())
+      .Times(::testing::AnyNumber())
+      .WillOnce(Return(10));
+  e.fuel_calculator=&fuel_calculator;
+  e.setEngineStatus(true);
+  EXPECT_LT(e.getARPM(),500);
+  EXPECT_EQ(e.getEngineStatus(),false);
 }
