@@ -1,0 +1,40 @@
+@startuml SequenceDiagramEngineSimulator
+EngineSimulatorMain -> ReadThread : ReadUpdate(input_frame_buffer)
+
+ReadThread -> SocketCan : ReadData(input_frame_buffer)
+
+EngineSimulatorMain-> ControlModule : Run(input_frame_buffer)
+
+ControlModule -> SignalDecoder : SetFrame(input_frame_buffer.frame_data)
+ControlModule -> SignalDecoder : GetHazard(hazard_signal)
+SignalDecoder -> ControlModule : hazard_signal
+
+
+Loop EvaluateHazard
+
+  ControlModule -> Engine : SetHazard(hazard_signal)
+  Engine -> Engine : EngineStartFlag = False
+  ControlModule -> Engine : getHazardSignal()
+  Engine -> ControlModule : hazard_signal
+  ControlModule -> ControlModule : If hazard = True 
+end
+ControlModule --> EngineSimulatorMain: Exit
+destroy ControlModule
+ 
+
+ControlModule -> SignalDecoder : getEngineStatus()
+SignalDecoder --> ControlModule : engine_STC
+ControlModule -> Engine : setEngineStatus()
+
+
+ControlModule -> SignalDecoder : getGearMode()
+SignalDecoder --> ControlModule : gear_mode
+ControlModule -> Gearbox : setGearMode()
+
+
+
+SignalEncoder -> ControlModule : EncodeOutputCan
+ControlModule --> SocketCan : SendCANFrame
+SocketCan --> EngineSimulatorMain : WriteData
+
+@enduml
