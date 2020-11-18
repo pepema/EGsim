@@ -19,6 +19,17 @@ void yourStuff::YouHaveJustRecievedACANFrame(const canfd_frame * const _frame) {
         this->InstrumentCluster.setGearPindle_int(_frame->data[4]);
         this->InstrumentCluster.setRPM(_frame->data[2] << 8 | _frame->data[1]);
         this->InstrumentCluster.ignite(_frame->data[3]);
+        if (_frame->data[3]== 1){
+            this->InstrumentCluster.setFuelGauges(255);
+            this->InstrumentCluster.setTemperatureGauges(255);
+            this->InstrumentCluster.setOilTemperatureGauges(255);
+        }
+        else {
+        this->InstrumentCluster.setFuelGauges(0);
+        this->InstrumentCluster.setTemperatureGauges(0);
+        this->InstrumentCluster.setOilTemperatureGauges(0);
+        }
+
     }
         break;
     case CANID::SHUTDOWN: {
@@ -26,13 +37,14 @@ void yourStuff::YouHaveJustRecievedACANFrame(const canfd_frame * const _frame) {
         if(_frame->data[0]!=0) exit(0);
         QString accbrake = "Acceleration: " + QString::number(_frame->data[6]) + "%\n" 
                            "Brake power: " + QString::number(_frame->data[4]) + "%";
+        //this->InstrumentCluster.setFuelGauges(100);
         this->InstrumentCluster.setTXT(accbrake);
         break;
     }
     case CAN::MSG::GAUGES_ID: {
         const struct CAN::MSG::Gauges_t::_inner* s = reinterpret_cast<const struct CAN::MSG::Gauges_t::_inner* >((_frame->data));
 
-        this->InstrumentCluster.setFuelGauges(s->G_FUEL);
+        this->InstrumentCluster.setFuelGauges(100);
         this->InstrumentCluster.setTemperatureGauges(s-> G_TEMP);
         this->InstrumentCluster.setOilTemperatureGauges(s->G_OILT);
         CAN::MSG::printGauges(s);
