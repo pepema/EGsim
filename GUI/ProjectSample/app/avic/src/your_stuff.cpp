@@ -26,6 +26,7 @@ void yourStuff::YouHaveJustRecievedACANFrame(const canfd_frame * const _frame) {
         QString accbrake = "Acceleration: " + QString::number(_frame->data[6]) + "%\n" 
                            "Brake power: " + QString::number(_frame->data[4]) + "%";
         this->InstrumentCluster.setText(accbrake);
+        break;
     }
     case CAN::MSG::GAUGES_ID: {
         const struct CAN::MSG::Gauges_t::_inner* s = reinterpret_cast<const struct CAN::MSG::Gauges_t::_inner* >((_frame->data));
