@@ -2,12 +2,8 @@
 #include "signals.hpp" 
 
 Signals::Signals()
-{ 
-    for(auto i = 0 ; i < 8 ; i++)
-    {
-        frame_data_ip.data[i] = 0;
-        //frame_data_ip[i] = 0;
-    }
+{
+    std::memset(frame_data_ip.data, 0, sizeof(frame_data_ip.data));
 }
 
 Signals::~Signals()
@@ -44,7 +40,6 @@ uint8_t Signals::getBrakeinput(){
 bool Signals::getHazard()
 {   
     if(frame_data_ip.data[0] == 0)
-    //if(frame_data_ip[0] == 0)
     {
         return false;
     }

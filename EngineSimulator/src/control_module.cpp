@@ -16,30 +16,18 @@ void ControlModule::PowertrainControl(){
         engine.updateARPM(signals.getBrakeinput(),gearbox.getGearMode());
 }
 
-void ControlModule::SendCANFrame(){
-    //FrameData *output_frame_data;
-    
-    //output_frame_data = reinterpret_cast<FrameData*>(output_data);
-    can_r_w->writeData(2,output_data);
-}
-
-void ControlModule::EvaluateEngineStatus(){
-    engine.setEngineStatus(signals.getEngineStatus());
-}
-
-
 void ControlModule::SetGearMode(){
     if(gearbox.getSpeed()==0 && signals.getBrakeinput()>0 && engine.getEngineStatus()==1){
 
         if(signals.getGearinput()==1)
-            gearbox.updateGearMode(GearMode::D);
+            gearbox.setGearMode(GearMode::D);
         else if(signals.getGearinput()==2)
-            gearbox.updateGearMode(GearMode::R);
+            gearbox.setGearMode(GearMode::R);
         else
-            gearbox.updateGearMode(GearMode::N);
+            gearbox.setGearMode(GearMode::N);
         }
     else if(gearbox.getSpeed()==0 && engine.getEngineStatus()==0){
-        gearbox.updateGearMode(GearMode::N);
+        gearbox.setGearMode(GearMode::N);
     }
 }
 
@@ -60,10 +48,6 @@ void ControlModule::ShiftGear(){
     }
 }
 
-void ControlModule::SetOutputFrame(){
-    output_data = encoder.get_frame_data_op();
-}
-
 void ControlModule::DummyDim(){
     uint16_t print_rpm = output_data.data[2] << 8 | output_data.data[1];
     std::cout << " Speed: "               << std::setfill(' ') << std::setw(3) << static_cast<int>(output_data.data[0])
@@ -76,12 +60,6 @@ void ControlModule::DummyDim(){
                 << '\r' << std::flush;
 }
 
-bool ControlModule::EvaluateHazard(){       
-    engine.setHazard(signals.getHazard());
-    if(engine.getHazard() == true) return true;
-    else return false;
-}
-
 void ControlModule::Encode(){
     encoder.encodeEngineStatus(engine.getEngineStatus());
     encoder.encodeRPM(engine.getARPM());
@@ -92,30 +70,34 @@ void ControlModule::Encode(){
 
 void ControlModule::Run(DataBuffer& input_frame_buffer)
 {
-    while(1)
+    while(engine.getHazard() == false)
     {
         //decode input CAN message
         signals.setFrame(input_frame_buffer.frame_data);
-        //DecodeInputCan(input_frame_buffer);
+        
         //Crash if Hazard
-        if(EvaluateHazard()) break;
+        engine.setHazard(signals.getHazard());
         
         //update Signals : Speed, RPM, Engine Status, Gear
-        EvaluateEngineStatus();
+        
+        //Evaluate Engine status
+        engine.setEngineStatus(signals.getEngineStatus());
+
         SetGearMode();
         CalculateGear();
         PowertrainControl();
      
         //Encode output values : Speed, RPM, Engine Status, Gear to CAN
         Encode();
-        SetOutputFrame();
-
+        
+        //SetOutputFrame();
+        output_data = encoder.get_frame_data_op();
+        
         //Send CAN message
-        SendCANFrame();
+        can_r_w->writeData(2,output_data);
         
         //Showing the values from output CAN Frame
         std::this_thread::sleep_for(std::chrono::milliseconds(10));
-
         DummyDim(); // Display current internal states
     }   
 }
@@ -125,10 +107,10 @@ void ControlModule::CalculateGear(){
         if(gearbox.getGear() == 0 && signals.getAcceleration() > 0){
             gearbox.gearShiftUp();
         }
-        else if(gearbox.getGear()<6 && engine.getARPM()>=4500){
+        else if(gearbox.getGear()<6 && engine.getARPM()>=gearboxparams::kGearUpRpm){
             shift_up= true;
         }
-        else if(gearbox.getGear()>1 && engine.getARPM()<=1500){
+        else if(gearbox.getGear()>1 && engine.getARPM()<=gearboxparams::kGearDownRpm){
             shift_down = true;
         }
     }
@@ -138,11 +120,4 @@ void ControlModule::CalculateGear(){
     else if(gearbox.getGear() == 0 && signals.getAcceleration() > 0 && gearbox.getGearMode() == GearMode::R){
         gearbox.gearShiftUp();
     }
-}
-
-void ControlModule::DecodeInputCan(DataBuffer& input_frame_buffer)
-{
-    //std::cout<<"Inside Decode input can control module" <<std::endl;
-    //signal_decoder.setIpFrame(can_r_w->getData(input_frame_buffer));
-    signals.setFrame(input_frame_buffer.frame_data);
 }

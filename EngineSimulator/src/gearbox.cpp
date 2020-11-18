@@ -7,7 +7,7 @@ Gearbox::Gearbox(){
     speed=0;
  }
 
-void Gearbox::updateGearMode(const GearMode& gear_mode){
+void Gearbox::setGearMode(const GearMode& gear_mode){
     this->gear_mode = gear_mode;
 }
 
