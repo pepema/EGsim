@@ -185,8 +185,8 @@ Item {
             property: "kph"
             easing.type: Easing.InOutQuad
             from: 0
-            to: 250
-            duration: 700
+            to: 1
+            duration: 1
         }
 //        PropertyAction {
 //            target: valueSource
@@ -225,7 +225,7 @@ Item {
 //            value: true
 //        }
         PauseAnimation {
-            duration: 300
+            duration: 1
         }
 //        PropertyAction {
 //            target: valueSource
@@ -270,9 +270,9 @@ Item {
             target: valueSource
             property: "kph"
             easing.type: Easing.InOutSine
-            from: 250
+            from: 1
             to: 0
-            duration: 700
+            duration: 1
         }
 
 
