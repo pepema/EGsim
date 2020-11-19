@@ -2,7 +2,7 @@
 #define MOCK_FUEL_CALCULATOR_HPP
 
 #include <gmock/gmock.h>
-#include "engine.h"
+#include "engine.hpp"
 
 using ::testing::Return;
 using ::testing::_;

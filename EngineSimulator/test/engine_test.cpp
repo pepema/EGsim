@@ -1,7 +1,7 @@
 #include "gtest/gtest.h"
 #include "mock_fuel_calculator.hpp"
-#include "engine.h"
-#include "gearbox.h"
+#include "engine.hpp"
+#include "gearbox.hpp"
 
 class EngineTest : public ::testing::Test {
 protected:
