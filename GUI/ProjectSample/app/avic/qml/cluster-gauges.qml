@@ -163,7 +163,7 @@ ApplicationWindow {
                     horizontalAlignment: Text.AlignCenter
 
                     text: valueSource.prindle
-                    color: "#c3c3c3"
+                    color: "#ffee00"
                     font.pixelSize: parent.height * 0.85
                 }
             }
@@ -184,7 +184,7 @@ ApplicationWindow {
                     horizontalAlignment: Text.AlignCenter
 
                     text: valueSource.gear
-                    color: "#c3c3c3"
+                    color: "#ffee00"
                     font.pixelSize: parent.height * 0.85
                 }
             }
