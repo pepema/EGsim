@@ -60,6 +60,18 @@ void CANEncoder::encodeGearMode(const GearMode& gear){
         //frame_data_op[4] = 'N';
 }
 
+void CANEncoder::encodeGauges(const bool &engine_status){
+
+    if (engine_status == 1){
+        frame_data_op.data[6] = 125;
+        frame_data_op.data[7] = 125;
+    }
+    else {
+        frame_data_op.data[6] = 0;
+        frame_data_op.data[7] = 0;
+    }
+}
+
 FrameData CANEncoder::get_frame_data_op()
 //uint8_t * CANEncoder::get_frame_data_op()
 {

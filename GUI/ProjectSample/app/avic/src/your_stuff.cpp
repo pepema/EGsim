@@ -21,17 +21,16 @@ void yourStuff::YouHaveJustRecievedACANFrame(const canfd_frame * const _frame) {
         this->InstrumentCluster.ignite(_frame->data[3]);
         if (_frame->data[3]== 1){
             this->InstrumentCluster.setFuelGauges(255);
-            this->InstrumentCluster.setTemperatureGauges(255);
-            this->InstrumentCluster.setOilTemperatureGauges(255);
         }
         else {
-        this->InstrumentCluster.setFuelGauges(0);
-        this->InstrumentCluster.setTemperatureGauges(0);
-        this->InstrumentCluster.setOilTemperatureGauges(0);
+            this->InstrumentCluster.setFuelGauges(0);
         }
+        this->InstrumentCluster.setOilTemperatureGauges(_frame->data[6]);
+        this->InstrumentCluster.setTemperatureGauges(_frame->data[7]);
 
     }
         break;
+
     case CANID::SHUTDOWN: {
         SetIcons(_frame->data[1], _frame->data[2]);
         if(_frame->data[0]!=0) exit(0);
@@ -41,6 +40,7 @@ void yourStuff::YouHaveJustRecievedACANFrame(const canfd_frame * const _frame) {
         this->InstrumentCluster.setTXT(accbrake);
         break;
     }
+
     case CAN::MSG::GAUGES_ID: {
         const struct CAN::MSG::Gauges_t::_inner* s = reinterpret_cast<const struct CAN::MSG::Gauges_t::_inner* >((_frame->data));
 
@@ -50,11 +50,14 @@ void yourStuff::YouHaveJustRecievedACANFrame(const canfd_frame * const _frame) {
         CAN::MSG::printGauges(s);
     }
         break;
-    case CAN::MSG::ICONSS_ID:
 
+    case CAN::MSG::ICONSS_ID:
         this->InstrumentCluster.setIcon(reinterpret_cast<const struct _icons * >((_frame->data)));
+        
         break;
-    default:
+   
+   default:
+   
         break;
     }
 
