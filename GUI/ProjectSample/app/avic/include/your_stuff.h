@@ -10,13 +10,12 @@ public:
     yourStuff(const std::string &_ifName, QObject *_);
 
 
-
-
 private:
     bool run();
     void YouHaveJustRecievedACANFrame(const canfd_frame * const _frame);
     void readMyEngineFrame(const unsigned char * const _data);
     void timerEvent(QTimerEvent*) override;
+    void SetIcons(__u8 data1, __u8 data2);
 
 //signals:
 //    void die();
@@ -25,6 +24,7 @@ private:
     size_t Counter;
     CANOpener CANReader;
     ClusterUpdater InstrumentCluster;
+    _icons* icons;
 
 };
 
