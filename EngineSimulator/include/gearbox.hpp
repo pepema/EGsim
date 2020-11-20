@@ -8,7 +8,8 @@ enum class GearMode {N, D, R};
 
 namespace gearboxparams
 {
-    static const uint16_t kGearUpRpm = 4500;
+    static const uint16_t kGearUpRpmHi = 7000;
+    static const uint16_t kGearUpRpmLo = 4700;
     static const uint16_t kGearDownRpm = 1500;
 }
 
