@@ -2,28 +2,33 @@
 
 actor User
 
-User ->> InputHandler : UserInput
+
+User ->> InputHandler : Keyboard
 
 activate InputHandler
 
 InputHandler -> InputHandler : ValidKey
 
-InputHandler -> InputHandler : EncodeKey
+InputHandler -> InputHandler : Encode Output Values To CAN
 
-InputHandler ->> SocketCAN : SendFrame
+InputHandler -> EngineSimulator : Send CAN Frame
 
 deactivate InputHandler
 
 activate EngineSimulator
 
-SocketCAN ->> EngineSimulator : Read Input CAN Message
-
 EngineSimulator -> EngineSimulator : Decode Input CAN Message
 
 EngineSimulator -> EngineSimulator : Update Signals (Speed, RPM, EngineStatus, Gear)
 
-EngineSimulator -> EngineSimulator : Encode Output Values (Speed, RPM, Engine Status, Gear to CAN)
+EngineSimulator -> EngineSimulator : Encode Output Values (Speed, RPM, Engine Status, Gear) to CAN
 
-EngineSimulator --> SocketCAN : Write Output CAN Message
+EngineSimulator -> GUI : Send CAN Frame
+
+deactivate EngineSimulator
+
+activate GUI
+
+GUI -> GUI : Show cool stuff
 
 @enduml
