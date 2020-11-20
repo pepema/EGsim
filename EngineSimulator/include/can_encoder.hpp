@@ -14,6 +14,7 @@ public:
     CANEncoder(/* args */);
     ~CANEncoder() = default;
     void encodeEngineStatus(const bool &);
+    void encodeGauges(const bool &);
     void encodeRPM(const uint16_t&);
     void encodeSpeed(const uint16_t&);
     void encodeGearMode(const GearMode&);
