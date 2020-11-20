@@ -24,7 +24,7 @@ private:
     size_t Counter;
     CANOpener CANReader;
     ClusterUpdater InstrumentCluster;
-    _icons* icons;
+    _icons icons;
 
 };
 

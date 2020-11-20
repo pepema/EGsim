@@ -68,20 +68,20 @@ void yourStuff::readMyEngineFrame(const unsigned char * const _data) {
 }
 
 void yourStuff::SetIcons(__u8 data1, __u8 data2){
-    icons->hazard = data1 >> 0 & 1;
-    icons->right_blinker = data1 >> 1 & 1;
-    icons->left_blinker = data1 >> 2 & 1;
-    icons->engine_check = data1 >> 3 & 1;
-    icons->oil_check = data1 >> 4 & 1;
-    icons->abs = data1 >> 5 & 1;
-    icons->battery = data1 >> 6 & 1;
-    icons->seat_belt = data1 >> 7 & 1;
+    icons.hazard = data1 >> 0 & 1;
+    icons.right_blinker = data1 >> 1 & 1;
+    icons.left_blinker = data1 >> 2 & 1;
+    icons.engine_check = data1 >> 3 & 1;
+    icons.oil_check = data1 >> 4 & 1;
+    icons.abs = data1 >> 5 & 1;
+    icons.battery = data1 >> 6 & 1;
+    icons.seat_belt = data1 >> 7 & 1;
 
-    icons->doors_open = data2 >> 0 & 1;
-    icons->high_beam = data2 >> 1 & 1;
-    icons->hand_break = data2 >> 2 & 1;
+    icons.doors_open = data2 >> 0 & 1;
+    icons.high_beam = data2 >> 1 & 1;
+    icons.hand_break = data2 >> 2 & 1;
 
-    this->InstrumentCluster.setIcon(icons);
+    this->InstrumentCluster.setIcon(&icons);
 }
 
 
@@ -103,6 +103,7 @@ yourStuff::yourStuff(const std::string &_ifName, QObject *_vs) {
     if(!(this->CANReader.open(_ifName))) exit(-1);//emit die();
     this->InstrumentCluster.init(_vs);
     this->startTimer(1);
+
 }
 
 bool yourStuff::run() {
