@@ -107,12 +107,20 @@ void ControlModule::CalculateGear(){
         if(gearbox.getGear() == 0 && signals.getAcceleration() > 0){
             gearbox.gearShiftUp();
         }
-        else if(gearbox.getGear()<6 && engine.getARPM()>=gearboxparams::kGearUpRpm){
-            shift_up= true;
-        }
-        else if(gearbox.getGear()>1 && engine.getARPM()<=gearboxparams::kGearDownRpm){
-            shift_down = true;
-        }
+        else if(gearbox.getGear()<=6)
+            if(signals.getAcceleration()>80 && engine.getARPM()>=gearboxparams::kGearUpRpmHi && gearbox.getGear()<6){
+                shift_up= true;
+            }
+            else if(signals.getAcceleration()<80 && engine.getARPM()>=gearboxparams::kGearUpRpmLo && gearbox.getGear()<6){
+                shift_up= true;
+            }
+            else{
+                if     (gearbox.getGear()==6 && engine.getARPM()<3500) shift_down = true;
+                else if(gearbox.getGear()==5 && engine.getARPM()<2700) shift_down = true;
+                else if(gearbox.getGear()==4 && engine.getARPM()<2500) shift_down = true;
+                else if(gearbox.getGear()==3 && engine.getARPM()<2000) shift_down = true;
+                else if(gearbox.getGear()==2 && engine.getARPM()<1500) shift_down = true;
+            }
     }
     else if(gearbox.getGear() == 1 && gearbox.getGearMode() == GearMode::N){
         shift_down = true;
@@ -120,4 +128,45 @@ void ControlModule::CalculateGear(){
     else if(gearbox.getGear() == 0 && signals.getAcceleration() > 0 && gearbox.getGearMode() == GearMode::R){
         gearbox.gearShiftUp();
     }
+
+
+
+
+    /*if(gearbox.getGearMode() == GearMode::D){
+        if(gearbox.getGear() == 0 && signals.getAcceleration() > 0){
+            gearbox.gearShiftUp();
+        }
+        else if(gearbox.getGear()==6){
+            if(engine.getARPM()<5000) shift_down = true;
+        }
+        else if(gearbox.getGear()==5){
+            if(engine.getARPM()>=5800) shift_up = true;
+            else if(engine.getARPM()<3000) shift_down = true;
+        }
+        else if(gearbox.getGear()==4){
+            if(engine.getARPM()>=5000) shift_up = true;
+            else if(engine.getARPM()<3000) shift_down = true;
+        }
+        else if(gearbox.getGear()==3){
+            if(engine.getARPM()>=4500) shift_up = true;
+            else if(engine.getARPM()<2000) shift_down = true;
+        }
+        else if(gearbox.getGear()==2){
+            if(engine.getARPM()>=4500) shift_up = true;
+            else if(engine.getARPM()<1500) shift_down = true;
+        }
+        else if(gearbox.getGear()==1){
+            if(engine.getARPM()>=4500 && signals.getAcceleration()>80) shift_up = true;
+            else if(gearbox.getGear() == 1 && gearbox.getGearMode() == GearMode::N) shift_down = true;
+        }
+    }
+    else if(gearbox.getGear() == 1 && gearbox.getGearMode() == GearMode::N){
+        shift_down = true;
+    }
+    else if(gearbox.getGear() == 0 && signals.getAcceleration() > 0 && gearbox.getGearMode() == GearMode::R){
+        gearbox.gearShiftUp();
+    }*/
+
+
+
 }
