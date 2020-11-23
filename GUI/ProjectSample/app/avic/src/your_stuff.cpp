@@ -19,14 +19,9 @@ void yourStuff::YouHaveJustRecievedACANFrame(const canfd_frame * const _frame) {
         this->InstrumentCluster.setGearPindle_int(_frame->data[4]);
         this->InstrumentCluster.setRPM(_frame->data[2] << 8 | _frame->data[1]);
         this->InstrumentCluster.ignite(_frame->data[3]);
-        if (_frame->data[3]== 1){
-            this->InstrumentCluster.setFuelGauges(255);
-        }
-        else {
-            this->InstrumentCluster.setFuelGauges(0);
-        }
-        this->InstrumentCluster.setOilTemperatureGauges(_frame->data[6]);
-        this->InstrumentCluster.setTemperatureGauges(_frame->data[7]);
+        this->InstrumentCluster.setFuelGauges((_frame->data[7] & 31)*10);
+        this->InstrumentCluster.setOilTemperatureGauges((((_frame->data[6] & 3)<<3)|(_frame->data[7]>>5))*10);
+        this->InstrumentCluster.setTemperatureGauges((_frame->data[6]>>2)*10);
 
     }
         break;

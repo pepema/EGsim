@@ -60,11 +60,14 @@ void CANEncoder::encodeGearMode(const GearMode& gear){
         //frame_data_op[4] = 'N';
 }
 
-void CANEncoder::encodeGauges(const bool &engine_status){
+void CANEncoder::encodeGauges(const bool &engine_status,const uint8_t  &Fuel_level,const uint8_t &oil_level,const uint8_t &temp_level){
 
     if (engine_status == 1){
-        frame_data_op.data[6] = 125;
-        frame_data_op.data[7] = 125;
+        frame_data_op.data[7] = Fuel_level/10 << 0;
+        frame_data_op.data[7] |= oil_level/10 << 5;
+
+        frame_data_op.data[6] = oil_level/10 >> 3;
+        frame_data_op.data[6] |= temp_level/10 << 2;
     }
     else {
         frame_data_op.data[6] = 0;
