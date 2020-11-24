@@ -15,6 +15,8 @@ add_executable(InputHandler
 
 target_link_libraries(InputHandler ncurses pthread)
 
+set(CMAKE_BUILD_TYPE Debug)
+
 set_target_properties(InputHandler
   PROPERTIES
   ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"
