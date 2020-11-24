@@ -14,7 +14,7 @@ CanReaderWriter::CanReaderWriter(){
 void CanReaderWriter::writeData(uint8_t id, const FrameData & output_data){
   this->can_frame.id = id;
   std::memcpy(can_frame.data,output_data.data, 8*sizeof(FrameData));
-  auto write_sc_status = this->socket_can.write(this->can_frame);
+  this->socket_can.write(this->can_frame);
 }
 
 void CanReaderWriter::readData(uint8_t id, DataBuffer &read_data_buffer)

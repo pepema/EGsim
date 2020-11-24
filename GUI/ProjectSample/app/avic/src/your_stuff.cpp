@@ -1,13 +1,9 @@
-//#include <chrono>
-#include <thread>
 #include <iostream>
 #include "your_stuff.h"
-#include "canio/can_common.h"
 
 namespace CANID {
 const canid_t ENGINE_AND_GEARBOX = 0x2;
 const canid_t INPUTHANDLER = 0x1;
-const canid_t ICONZ = 0x213;
 }
 
 void yourStuff::YouHaveJustRecievedACANFrame(const canfd_frame * const _frame) {
@@ -31,25 +27,9 @@ void yourStuff::YouHaveJustRecievedACANFrame(const canfd_frame * const _frame) {
         if(_frame->data[0]!=0) exit(0);
         QString accbrake = "Acceleration: " + QString::number(_frame->data[6]) + "%\n" 
                            "Brake power: " + QString::number(_frame->data[4]) + "%";
-        //this->InstrumentCluster.setFuelGauges(100);
         this->InstrumentCluster.setTXT(accbrake);
         break;
     }
-
-    case CAN::MSG::GAUGES_ID: {
-        const struct CAN::MSG::Gauges_t::_inner* s = reinterpret_cast<const struct CAN::MSG::Gauges_t::_inner* >((_frame->data));
-
-        this->InstrumentCluster.setFuelGauges(100);
-        this->InstrumentCluster.setTemperatureGauges(s-> G_TEMP);
-        this->InstrumentCluster.setOilTemperatureGauges(s->G_OILT);
-        CAN::MSG::printGauges(s);
-    }
-        break;
-
-    case CAN::MSG::ICONSS_ID:
-        this->InstrumentCluster.setIcon(reinterpret_cast<const struct _icons * >((_frame->data)));
-        
-        break;
    
    default:
    
@@ -63,20 +43,20 @@ void yourStuff::readMyEngineFrame(const unsigned char * const _data) {
 }
 
 void yourStuff::SetIcons(__u8 data1, __u8 data2){
-    icons->hazard = data1 >> 0 & 1;
-    icons->right_blinker = data1 >> 1 & 1;
-    icons->left_blinker = data1 >> 2 & 1;
-    icons->engine_check = data1 >> 3 & 1;
-    icons->oil_check = data1 >> 4 & 1;
-    icons->abs = data1 >> 5 & 1;
-    icons->battery = data1 >> 6 & 1;
-    icons->seat_belt = data1 >> 7 & 1;
+    icons.hazard = data1 >> 0 & 1;
+    icons.right_blinker = data1 >> 1 & 1;
+    icons.left_blinker = data1 >> 2 & 1;
+    icons.engine_check = data1 >> 3 & 1;
+    icons.oil_check = data1 >> 4 & 1;
+    icons.abs = data1 >> 5 & 1;
+    icons.battery = data1 >> 6 & 1;
+    icons.seat_belt = data1 >> 7 & 1;
 
-    icons->doors_open = data2 >> 0 & 1;
-    icons->high_beam = data2 >> 1 & 1;
-    icons->hand_break = data2 >> 2 & 1;
+    icons.doors_open = data2 >> 0 & 1;
+    icons.high_beam = data2 >> 1 & 1;
+    icons.hand_break = data2 >> 2 & 1;
 
-    this->InstrumentCluster.setIcon(icons);
+    this->InstrumentCluster.setIcon(&icons);
 }
 
 

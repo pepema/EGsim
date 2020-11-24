@@ -10,7 +10,7 @@ void Engine::updateTRPM(const uint8_t& acceleration){
             this->TRPM=engparams::kIdleRpm;
     else
         if(acceleration == engparams::kShiftDownEngineAcc) this->TRPM = engparams::kTRPMforShiftDown;
-        else if(acceleration == engparams::kShiftDownEngineAcc) this->TRPM = engparams::kTRPMforShiftUp;
+        else if(acceleration == engparams::kShiftUpEngineAcc) this->TRPM = engparams::kTRPMforShiftUp;
         else
             this->TRPM=0;
     }
@@ -59,7 +59,7 @@ void Engine::updateARPM_D_R(const uint8_t& brake){
                 double brake_TRPM = TRPM-(engparams::kRpmWorkRange*brake/100);
                 double brake_rpm_increment = (brake_TRPM-this->ARPM)/engparams::kRpmIncrementDivisor;
                 if (brake < acc) this->ARPM+=brake_rpm_increment;
-                else if (brake >= acc) {
+                else {
                     if(this->ARPM < engparams::kIdleRpm) this->ARPM = engparams::kIdleRpm;
                     else this->ARPM-=engparams::kStandardRpmReduction + engparams::kStandardRpmReduction*(1+brake/30);
                 }

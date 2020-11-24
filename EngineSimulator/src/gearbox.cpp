@@ -12,7 +12,8 @@ void Gearbox::setGearMode(const GearMode& gear_mode){
 }
 
 void Gearbox::updateSpeed(const uint16_t& ARPM){
-    double tempspeed;
+    //If N keep 0
+    double tempspeed = 0;
     if (gear_mode==GearMode::D || gear_mode==GearMode::R)
         if(ARPM>engparams::kIdleRpm)
             if(gear==1)
@@ -21,10 +22,6 @@ void Gearbox::updateSpeed(const uint16_t& ARPM){
                 tempspeed = ARPM*gear_ratio[gear];
         else
             tempspeed = 0;
-        
-    else if (gear_mode==GearMode::N)
-        tempspeed = 0;
-
     speed = tempspeed;
 }
 
