@@ -13,7 +13,7 @@ public:
   int GetPressedKey(std::string file);
   void Run(uint8_t*, bool&);
   std::condition_variable cv;
-  bool input_ready=false;
+  bool input_ready;
   std::mutex m;
 private:
   CanEncoder encoder;
