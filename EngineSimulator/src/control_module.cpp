@@ -66,7 +66,8 @@ void ControlModule::Encode(){
     encoder.encodeSpeed(gearbox.getSpeed());
     encoder.encodeGearMode(gearbox.getGearMode());
     encoder.encodeGear(gearbox.getGear());
-    encoder.encodeGauges(engine.getEngineStatus());
+    encoder.encodeGauges(engine.getEngineStatus(),255,130,130);
+   
 }
 
 void ControlModule::Run(DataBuffer& input_frame_buffer)
