@@ -14,4 +14,6 @@ Engine simulator takes a CAN frame with input signals. It simulates Engine behav
 Instrument cluster is accepting a CAN frame conatining signals. It then animates the User interface as an instrument cluster of a car. It updates the animation based on new CAN frames it recieves.
 
 
-![Alt text](pictures/input_output.png?raw=true "Title")
+![Alt text](pictures/input_output.png?raw=true "Inputs and outputs")
+![Alt text](pictures/overview.png?raw=true "Overview")
+![Alt text](pictures/sequence.png?raw=true "Sequence Diagram")
