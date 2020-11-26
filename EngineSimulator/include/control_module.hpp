@@ -9,9 +9,9 @@
 #include "engine.hpp"
 #include "gearbox.hpp"
 
-
-class ControlModule{
-    public:
+class ControlModule
+{
+public:
     void Run(DataBuffer &);
     void PowertrainControl();
     void CalculateGear();
@@ -19,16 +19,15 @@ class ControlModule{
     void Encode();
     void SetGearMode();
     void DummyDim();
+    ControlModule(CanReaderWriter *);
 
-    ControlModule(CanReaderWriter*);
-    
-    private:
+private:
     bool shift_up, shift_down;
     Engine engine;
     Gearbox gearbox;
     Signals signals;
     CANEncoder encoder;
     FrameData output_data;
-    CanReaderWriter* can_r_w;
+    CanReaderWriter *can_r_w;
 };
 #endif // CONTROL_MODULE_H

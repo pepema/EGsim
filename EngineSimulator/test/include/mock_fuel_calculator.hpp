@@ -4,13 +4,15 @@
 #include <gmock/gmock.h>
 #include "engine.hpp"
 
-using ::testing::Return;
 using ::testing::_;
+using ::testing::Return;
 
-class MockFuelCalculator : public FuelCalculator{
+class MockFuelCalculator : public FuelCalculator
+{
 public:
-  MockFuelCalculator(){
-  ON_CALL(*this, FuelAge()).WillByDefault(Return(0));
+  MockFuelCalculator()
+  {
+    ON_CALL(*this, FuelAge()).WillByDefault(Return(0));
   }
   MOCK_METHOD(int, CalculateFuelConsumption, (bool EngineSate), (override));
   MOCK_METHOD(int, FuelUsed, (), (override));

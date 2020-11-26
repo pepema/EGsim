@@ -2,23 +2,23 @@
 
 CANEncoder::CANEncoder()
 {
-    frame_data_op.data[0] = cnsts::kSpeed; 
-    //frame_data_op[0] = cnsts::SPEED; 
+    frame_data_op.data[0] = defaultstate::kSpeed; 
+    //frame_data_op[0] = defaultstate::SPEED; 
     
     
-    frame_data_op.data[1] = cnsts::kLRpm;
-    frame_data_op.data[2] = cnsts::kMRpm;
+    frame_data_op.data[1] = defaultstate::kLRpm;
+    frame_data_op.data[2] = defaultstate::kMRpm;
     /*
-    frame_data_op[1] = cnsts::LRPM;
-    frame_data_op[2] = cnsts::MRPM;
+    frame_data_op[1] = defaultstate::LRPM;
+    frame_data_op[2] = defaultstate::MRPM;
     */
 
-    frame_data_op.data[3] = cnsts::kEngineStatus;
-    //frame_data_op[3] = cnsts::ENGSTATUS;
+    frame_data_op.data[3] = defaultstate::kEngineStatus;
+    //frame_data_op[3] = defaultstate::ENGSTATUS;
 
 
-    frame_data_op.data[4] = cnsts::kGear;
-    //frame_data_op[4] = cnsts::GEAR;
+    frame_data_op.data[4] = defaultstate::kGear;
+    //frame_data_op[4] = defaultstate::GEAR;
 
     //Reserved Data bytes
     

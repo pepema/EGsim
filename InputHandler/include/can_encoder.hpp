@@ -4,15 +4,16 @@
 #include <iostream>
 #include <unordered_map>
 
-using index_and_data = std::pair<int,int>;
-using keymap = std::unordered_map<char,index_and_data>;
+using index_and_data = std::pair<int, int>;
+using keymap = std::unordered_map<char, index_and_data>;
 
-class CanEncoder{
+class CanEncoder
+{
 public:
-  void Encode(int input, uint8_t* data);
+  void Encode(const int &input, uint8_t *const data);
   CanEncoder();
   ~CanEncoder() = default;
-  bool ValidKey(int, uint8_t* data);
+  bool ValidKey(const int &key, uint8_t *const data);
   keymap valid_keys;
 };
 
