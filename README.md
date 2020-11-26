@@ -1,11 +1,11 @@
 # Engine Simulator
 Engine simulator is a software which accepts input signals and simulates the behaviour of a mechanical Engine by providing output signals. Please refer below picture for an overview of MVP(Minimum Viable Product)
 
-https://github.com/pepema/EGsim/blob/main/EngineSimulatorMVP.png
+![Alt text](Documentation/EngineSimulatorMVP.png?raw=true "Engine Simulator")
 
 The project has 3 binaries and the sequence diagram for the binaries is explained in the below picture.
 
-https://github.com/pepema/EGsim/blob/main/SequenceDiagram.png
+![Alt text](Documentation/SequenceDiagram.png?raw=true "Sequence Diagram")
 
 ### Input Handler
 
@@ -26,14 +26,18 @@ We have a shell script to do the following:
 2) Build the binaries
 3) Launch the executables
 
-It is called runAll.sh.
+It is called runAll.sh.  
+So, in order to build and run our program:  
+`./Sripts/runAll.sh rebuild`  
+**Note: CMAKE version 3.15 minimum required**
 
 Alternatively you could ofcourse use cmake files for the binaries to launch them seperately of use a commmon cmake for all binaries.
 
 ## Unit test
 
 We have some test cases in gtest framework for Engine class which is a part of Engine Simulator.
-Using the cmake file you can run the tests.
+Using the cmake file you can build the tests and run them:  
+`./Scripts/testsRun.sh`
 
 ## Backlog
 
