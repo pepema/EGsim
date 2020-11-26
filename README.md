@@ -5,6 +5,8 @@ https://github.com/pepema/EGsim/blob/main/EngineSimulatorMVP.png
 
 The project has 3 binaries and the sequence diagram for the binaries is explained in the below picture.
 
+https://github.com/pepema/EGsim/blob/main/SequenceDiagram.png
+
 ## Input Handler
 
 Input handler is accepting user inputs from a keyboard and encodes it to a CAN frame for Engine simulator.
