@@ -1,5 +1,9 @@
 # Engine Simulator
-Engine simulator is a software which accepts input signals and simulates the behaviour of a mechanical Engine by providing output signals.
+Engine simulator is a software which accepts input signals and simulates the behaviour of a mechanical Engine by providing output signals. Please refer below picture for an overview of MVP(Minimum Viable Product)
+
+https://github.com/pepema/EGsim/blob/main/EngineSimulatorMVP.png
+
+The project has 3 binaries and the sequence diagram for the binaries is explained in the below picture.
 
 ## Input Handler
 
