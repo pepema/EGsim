@@ -26,12 +26,12 @@ In order to run this program you need to install some external libraries:
 1. ncurses `sudo apt-get install ncurses-dev`
 2. can utils `sudo apt-get install can-utils`
 3. qt5: `sudo apt-get install <command>` with the following commands
-  1. qt5-default
-  2. qtdeclarative5-dev
-  3. qtquickcontrols2-5-dev
-  4. libgles2-mesa-dev
-  5. qtquickcontrols2-5-dev
-  6. qml-module-qtquick-controls
+    1. qt5-default
+    2. qtdeclarative5-dev
+    3. qtquickcontrols2-5-dev
+    4. libgles2-mesa-dev
+    5. qtquickcontrols2-5-dev
+    6. qml-module-qtquick-controls
 4. google test: https://www.eriksmistad.no/getting-started-with-google-test-on-ubuntu/
 
 
